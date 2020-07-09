@@ -37,6 +37,7 @@ public class WsRenderer extends DefaultTableCellRenderer {
         JLabel c = (JLabel) super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
         //alapbol legyen null a background color
         c.setBackground(null);
+        c.setForeground(null);
         //a tooltip legyen nulla
         c.setToolTipText(null);
 
@@ -49,7 +50,7 @@ public class WsRenderer extends DefaultTableCellRenderer {
 
                     if (ws.getWeekList().get(i).getOraszam() < Double.parseDouble(table.getValueAt(row, column).toString())) {
 
-                        c.setBackground(Color.red);
+                        c.setForeground(Color.red);
 
                     }
 

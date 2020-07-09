@@ -24,9 +24,9 @@ public class osszesHetEdit extends javax.swing.JDialog {
     }
 
     public void setVisible(boolean b, WorkStation w) {
-
-        super.setVisible(b);
         this.w = w;
+        this.setVisible(b);
+       
 
     }
 

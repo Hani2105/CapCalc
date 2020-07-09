@@ -16,6 +16,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -44,7 +45,9 @@ public class MainWindow extends javax.swing.JFrame {
     //a session adatok
     public static SessionObject so = new SessionObject();
     public AddWorkstation addws = new AddWorkstation(this, false, this);
-    public  osszesHetEdit ohe = new osszesHetEdit(this,true);
+    public osszesHetEdit ohe = new osszesHetEdit(this, false);
+    //a ws-ek kulonallo heteinek adatainak módosítója
+    public HetDataEdit hde = new HetDataEdit(this, false);
     //a workstationok pozicioja
     private static int womagassag = 0;
 
@@ -392,7 +395,7 @@ public class MainWindow extends javax.swing.JFrame {
                 {null, null, null, null, null, null}
             },
             new String [] {
-                "PartNumber", "Demand", "Start Week", "Station", "CT", "Gyártási idő"
+                "PartNumber", "Demand", "Start Week", "Station", "CT/DB", "Gyártási idő"
             }
         ));
         jTable5.setCellSelectionEnabled(true);
@@ -1036,7 +1039,7 @@ public class MainWindow extends javax.swing.JFrame {
         outerloop:
         for (int d = 0; d < so.getDemandList().size(); d++) {
 //felvesszuk a pn valtozot
-            String pn = so.getDemandList().get(d)[1].trim();
+            String pn = so.getDemandList().get(d)[1].trim().toUpperCase();
 //átalakítjuk a startdátumot évhétté
             String startdate = evhet(so.getDemandList().get(d)[7].trim());
 //kiszedjuk a gyartando darabszamot
@@ -1050,9 +1053,10 @@ public class MainWindow extends javax.swing.JFrame {
 
             for (int k = 0; k < so.getKapcsolatList().size(); k++) {
 //ha megvan a pn ben a kapcsoaltlista pn je
-                if (pn.contains(so.getKapcsolatList().get(k)[0].trim())) {
+                if (pn.equals(so.getKapcsolatList().get(k)[0].trim().toUpperCase())) {
 //megnezzuk, hogy van e hozza default sor, vagyis kell, hogy legyen
                     defaultws = so.getKapcsolatList().get(k)[1].trim();
+                    break;
 
                 }
 
@@ -1077,16 +1081,17 @@ public class MainWindow extends javax.swing.JFrame {
                 //a cycletime
                 double ct = 0.00;
                 //panelizacio
-                int panelizacio = 0;
+
                 for (int c = 0; c < so.getSmtcycletime().size(); c++) {
 
-                    if (pn.contains(so.getSmtcycletime().get(c)[1].trim()) && defaultws.toLowerCase().trim().contains(so.getSmtcycletime().get(c)[3].toLowerCase().trim())) {
+                    if (pn.equals(so.getSmtcycletime().get(c)[1].trim().toUpperCase()) && defaultws.toUpperCase().trim().equals(so.getSmtcycletime().get(c)[3].toUpperCase().trim())) {
 //a legerosebb merest kell alapul venni
                         //ha kalkulalt
                         try {
                             if (so.getSmtcycletime().get(c)[8] != null) {
 
-                                ct += Double.parseDouble(so.getSmtcycletime().get(c)[8]);
+                                ct += Double.parseDouble(so.getSmtcycletime().get(c)[8]) / Double.parseDouble(so.getSmtcycletime().get(c)[5]);
+                                continue;
                             }
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -1095,19 +1100,19 @@ public class MainWindow extends javax.swing.JFrame {
                         try {
                             if (so.getSmtcycletime().get(c)[7] != null) {
 
-                                ct += Double.parseDouble(so.getSmtcycletime().get(c)[7]);
+                                ct += Double.parseDouble(so.getSmtcycletime().get(c)[7]) / Double.parseDouble(so.getSmtcycletime().get(c)[5]);
+                                continue;
                             }
                         } catch (Exception e) {
                         }//mert
                         try {
                             if (so.getSmtcycletime().get(c)[6] != null) {
 
-                                ct += Double.parseDouble(so.getSmtcycletime().get(c)[6]);
+                                ct += Double.parseDouble(so.getSmtcycletime().get(c)[6]) / Double.parseDouble(so.getSmtcycletime().get(c)[5]);
+                                continue;
                             }
                         } catch (Exception e) {
                         }
-
-                        panelizacio = Integer.parseInt(so.getSmtcycletime().get(c)[5]);
 
                     }
 
@@ -1135,20 +1140,11 @@ public class MainWindow extends javax.swing.JFrame {
                     adatok[1] = String.valueOf(qty);
                     adatok[2] = startdate;
                     adatok[3] = defaultws;
-                    adatok[4] = String.valueOf(ct);
-                    double idoigeny = ((ct / panelizacio * qty) / 60) / 60;
+                    adatok[4] = new DecimalFormat("#.##").format(ct);
+                    double idoigeny = ((ct * qty) / 60) / 60;
                     adatok[5] = String.valueOf(idoigeny);
 
 //meg kell nezni, hogy eltezik e mar ilyen adat a listben es ha igen akkor csak ossze kell adni az ertekeket es nem uj sort letrehozni
-//                    for (int i = 0; i < so.getOsszegzes().size(); i++) {
-//
-//                        if (so.getOsszegzes().get(i)[0].trim().equals(pn.trim()) && so.getOsszegzes().get(i)[2].trim().equals(startdate.trim()) && so.getOsszegzes().get(i)[3].trim().toLowerCase().equals(defaultws.toLowerCase().trim())) {
-//                            so.getOsszegzes().get(i)[1] += qty;
-//                            so.getOsszegzes().get(i)[5] += idoigeny;
-//
-//                        }
-//
-//                    }
                     so.getOsszegzes().add(adatok);
                     model.addRow(adatok);
 

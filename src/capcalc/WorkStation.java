@@ -121,6 +121,30 @@ public class WorkStation extends javax.swing.JPanel {
         //ez a metódus szedi össze a teljes adatot amit az állomás megjelenít
         //ki kell talalni, hogy hány hetet kell létrehozni az állomásban, létrehozza és a hetek begyüjtik a sajat adataikat
         addWeeksToWs();
+        //az állomás alap hatékonyságának figyelembe vétele
+        calcWithWsEff();
+
+    }
+//a táblában jelenleg lévő adatokkal fut még egy kört és lerontja a ws hatékonyságának számával
+
+    public void calcWithWsEff() {
+
+        DefaultTableModel model = new DefaultTableModel();
+        model = (DefaultTableModel) jTable1.getModel();
+
+        for (int i = 1; i < model.getRowCount(); i++) {
+
+            for (int c = 1; c < model.getColumnCount(); c++) {
+                try {
+                    model.setValueAt(new DecimalFormat("#.##").format(Double.parseDouble(model.getValueAt(i, c).toString()) / this.getHatekonysag()), i, c);
+                } catch (Exception e) {
+                }
+            }
+
+        }
+
+        //ujrafuttatjuk a summat
+        sumGyartas();
 
     }
 
@@ -132,7 +156,7 @@ public class WorkStation extends javax.swing.JPanel {
         this.getWeekList().clear();
         for (int i = 0; i < MainWindow.so.getOsszegzes().size(); i++) {
             //ha egyezik a sor neve a stationeval
-            if (this.getName().toLowerCase().trim().equals(MainWindow.so.getOsszegzes().get(i)[3].toLowerCase().trim())) {
+            if (this.getName().toUpperCase().trim().equals(MainWindow.so.getOsszegzes().get(i)[3].toUpperCase().trim())) {
                 if (minhet > Integer.parseInt(MainWindow.so.getOsszegzes().get(i)[2])) {
 
                     minhet = Integer.parseInt(MainWindow.so.getOsszegzes().get(i)[2]);
@@ -267,6 +291,11 @@ public class WorkStation extends javax.swing.JPanel {
             }
         ));
         jTable1.setCellSelectionEnabled(true);
+        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable1MouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(jTable1);
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/pictures/machine.png"))); // NOI18N
@@ -311,7 +340,12 @@ public class WorkStation extends javax.swing.JPanel {
     private void edithetoraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_edithetoraActionPerformed
         //hetedit visible
         m.ohe.setVisible(true, this);
+
     }//GEN-LAST:event_edithetoraActionPerformed
+
+    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
+        m.hde.setVisible(true, this);
+    }//GEN-LAST:event_jTable1MouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

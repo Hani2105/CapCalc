@@ -759,7 +759,7 @@
                         <Column editable="true" title="Demand" type="java.lang.Object"/>
                         <Column editable="true" title="Start Week" type="java.lang.Object"/>
                         <Column editable="true" title="Station" type="java.lang.Object"/>
-                        <Column editable="true" title="CT" type="java.lang.Object"/>
+                        <Column editable="true" title="CT/DB" type="java.lang.Object"/>
                         <Column editable="true" title="Gy&#xe1;rt&#xe1;si id&#x151;" type="java.lang.Object"/>
                       </Table>
                     </Property>

@@ -41,8 +41,6 @@ public class Week {
     public void setOraszam(double oraszam) {
         this.oraszam = oraszam;
     }
-    
-    
 
     public WorkStation getWs() {
         return ws;
@@ -109,21 +107,23 @@ public class Week {
 
                 if (model.getValueAt(r, 0).equals(getGyartasok().get(i)[0].substring(0, 5))) {
 
-                    //ha talalunk akkor megkeressuk a het bevet is
-                    double qty = 0;
+                    //ha talalunk akkor megkeressuk a het nevet is
+                    double gyartasido = 0;
                     for (int c = 1; c < model.getColumnCount(); c++) {
 
                         if (model.getColumnName(c).equals(getWeekname())) {
                             //be kell allitani az addatokat a cellaba
                             try {
-                                qty += Double.parseDouble(model.getValueAt(r, c).toString()) + Double.parseDouble(getGyartasok().get(i)[5]);
+                                //a gyartasidot ki kell szamolni, demand * qty /60 /60 
+                                gyartasido += Double.parseDouble(model.getValueAt(r, c).toString()) + ((Double.parseDouble(getGyartasok().get(i)[1]) * Double.parseDouble(getGyartasok().get(i)[4]))/60/60);
+
                             } catch (Exception e) {
                                 try {
-                                    qty = Double.parseDouble(getGyartasok().get(i)[5]);
+                                    gyartasido = Double.parseDouble(getGyartasok().get(i)[1]) * Double.parseDouble(getGyartasok().get(i)[4])/60/60;
                                 } catch (Exception ex) {
                                 }
                             }
-                            model.setValueAt(new DecimalFormat("#.##").format(qty), r, c);
+                            model.setValueAt(new DecimalFormat("#.##").format(gyartasido), r, c);
 
                         }
 
@@ -137,20 +137,20 @@ public class Week {
             model.addRow(new Object[model.getColumnCount()]);
             model.setValueAt(getGyartasok().get(i)[0].substring(0, 5), model.getRowCount() - 1, 0);
             //be kell írni az adatokat is
-            double qty = 0;
+            double gyartasido = 0;
             for (int c = 1; c < model.getColumnCount(); c++) {
 
                 if (model.getColumnName(c).equals(getWeekname())) {
                     //be kell allitani az addatokat a cellaba
                     try {
-                        qty += Double.parseDouble(model.getValueAt(model.getRowCount() - 1, c).toString()) + Double.parseDouble(getGyartasok().get(i)[5]);
+                        gyartasido += Double.parseDouble(model.getValueAt(model.getRowCount() - 1, c).toString()) + ((Double.parseDouble(getGyartasok().get(i)[1]) * Double.parseDouble(getGyartasok().get(i)[4]))/60/60);
                     } catch (Exception e) {
                         try {
-                            qty = Double.parseDouble(getGyartasok().get(i)[5]);
+                            gyartasido = Double.parseDouble(getGyartasok().get(i)[1]) * Double.parseDouble(getGyartasok().get(i)[4])/60/60;
                         } catch (Exception ex) {
                         }
                     }
-                    model.setValueAt(new DecimalFormat("#.##").format(qty), model.getRowCount() - 1, c);
+                    model.setValueAt(new DecimalFormat("#.##").format(gyartasido), model.getRowCount() - 1, c);
                     continue outerloop;
 
                 }
