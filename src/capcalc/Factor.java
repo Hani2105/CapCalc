@@ -15,8 +15,23 @@ public class Factor {
     private int evhet;
     private double tenyezo;
     private String leiras;
+    private String neve;
 
-    public Factor() {
+    public Factor(int evhet, String neve, String leiras, double tenyezo) {
+        
+        setEvhet(evhet);
+        setNeve(neve);
+        setLeiras(leiras);
+        setTenyezo(tenyezo);
+        
+    }
+
+    public String getNeve() {
+        return neve;
+    }
+
+    public void setNeve(String neve) {
+        this.neve = neve;
     }
 
     public int getEvhet() {
@@ -42,7 +57,5 @@ public class Factor {
     public void setLeiras(String leiras) {
         this.leiras = leiras;
     }
-    
-    
 
 }

@@ -27,6 +27,7 @@ public class WorkStation extends javax.swing.JPanel {
     public WorkStation(String name, double hatekonysag, int szelesseg, int magassag, MainWindow m) {
         initComponents();
         this.m = m;
+        jTable1.getTableHeader().setDefaultRenderer(new WsHeaderRenderer(this));
         jTable1.setDefaultRenderer(Object.class, new WsRenderer(this));
         setName(name);
         setHatekonysag(hatekonysag);
@@ -131,6 +132,14 @@ public class WorkStation extends javax.swing.JPanel {
 
         DefaultTableModel model = new DefaultTableModel();
         model = (DefaultTableModel) jTable1.getModel();
+        //csak egy sor legyen a modellben
+        model.setRowCount(1);
+        //kitetetjuk az osszes het adatat ujbol a tablaba
+        for (int i = 0; i < getWeekList().size(); i++) {
+
+            getWeekList().get(i).setSajatAdatToTable();
+
+        }
 
         for (int i = 1; i < model.getRowCount(); i++) {
 

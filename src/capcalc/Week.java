@@ -21,6 +21,7 @@ public class Week {
     private ArrayList<String[]> gyartasok = new ArrayList<>();
     private WorkStation ws = null;
     private double oraszam = 10.0;
+    private ArrayList<Factor> tenyezolist = new ArrayList<>();
 
     public Week(String wsname, String weekname, WorkStation ws) {
 
@@ -32,6 +33,14 @@ public class Week {
         //ki kell tenni a táblába a megfelelő helyre
         setSajatAdatToTable();
 
+    }
+
+    public ArrayList<Factor> getTenyezoList() {
+        return tenyezolist;
+    }
+
+    public void setTenyezoList(ArrayList<Factor> tenyezolist) {
+        this.tenyezolist = tenyezolist;
     }
 
     public double getOraszam() {
@@ -94,7 +103,7 @@ public class Week {
     }
 
     public void setSajatAdatToTable() {
-
+//ez teszi ki a saját gyártásait a workstation táblájába
         //be kell jarni a tablat, meg kell keresni a prefixet es a hetnek a szamat
         DefaultTableModel model = new DefaultTableModel();
         model = (DefaultTableModel) ws.jTable1.getModel();
@@ -115,11 +124,11 @@ public class Week {
                             //be kell allitani az addatokat a cellaba
                             try {
                                 //a gyartasidot ki kell szamolni, demand * qty /60 /60 
-                                gyartasido += Double.parseDouble(model.getValueAt(r, c).toString()) + ((Double.parseDouble(getGyartasok().get(i)[1]) * Double.parseDouble(getGyartasok().get(i)[4]))/60/60);
+                                gyartasido += Double.parseDouble(model.getValueAt(r, c).toString()) + ((Double.parseDouble(getGyartasok().get(i)[1]) * Double.parseDouble(getGyartasok().get(i)[4])) / 60 / 60);
 
                             } catch (Exception e) {
                                 try {
-                                    gyartasido = Double.parseDouble(getGyartasok().get(i)[1]) * Double.parseDouble(getGyartasok().get(i)[4])/60/60;
+                                    gyartasido = Double.parseDouble(getGyartasok().get(i)[1]) * Double.parseDouble(getGyartasok().get(i)[4]) / 60 / 60;
                                 } catch (Exception ex) {
                                 }
                             }
@@ -143,10 +152,10 @@ public class Week {
                 if (model.getColumnName(c).equals(getWeekname())) {
                     //be kell allitani az addatokat a cellaba
                     try {
-                        gyartasido += Double.parseDouble(model.getValueAt(model.getRowCount() - 1, c).toString()) + ((Double.parseDouble(getGyartasok().get(i)[1]) * Double.parseDouble(getGyartasok().get(i)[4]))/60/60);
+                        gyartasido += Double.parseDouble(model.getValueAt(model.getRowCount() - 1, c).toString()) + ((Double.parseDouble(getGyartasok().get(i)[1]) * Double.parseDouble(getGyartasok().get(i)[4])) / 60 / 60);
                     } catch (Exception e) {
                         try {
-                            gyartasido = Double.parseDouble(getGyartasok().get(i)[1]) * Double.parseDouble(getGyartasok().get(i)[4])/60/60;
+                            gyartasido = Double.parseDouble(getGyartasok().get(i)[1]) * Double.parseDouble(getGyartasok().get(i)[4]) / 60 / 60;
                         } catch (Exception ex) {
                         }
                     }

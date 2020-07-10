@@ -6,6 +6,7 @@
 package capcalc;
 
 import java.text.DecimalFormat;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -35,12 +36,16 @@ public class HetDataEdit extends javax.swing.JDialog {
         this.setTitle("Week: " + w.jTable1.getColumnName(w.jTable1.getSelectedColumn()));
 
     }
+//a kis szerkeszto ablakba teszi ki az adatokat,gyártás és a factorok
 
     public void hetDataToTable() {
 
         DefaultTableModel model = new DefaultTableModel();
         model = (DefaultTableModel) jTable1.getModel();
         model.setRowCount(0);
+        DefaultTableModel model1 = new DefaultTableModel();
+        model1 = (DefaultTableModel) jTable2.getModel();
+        model1.setRowCount(0);
         //kiszedjuk a hetet a ws ből
         for (int i = 0; i < w.getWeekList().size(); i++) {
 
@@ -53,6 +58,13 @@ public class HetDataEdit extends javax.swing.JDialog {
                     }
                 }
 
+                for (int n = 0; n < w.getWeekList().get(i).getTenyezoList().size(); n++) {
+                    try {
+                        model1.addRow(new Object[]{w.getWeekList().get(i).getTenyezoList().get(n).getNeve(), w.getWeekList().get(i).getTenyezoList().get(n).getLeiras(), w.getWeekList().get(i).getTenyezoList().get(n).getTenyezo()});
+                    } catch (Exception e) {
+                    }
+                }
+
                 break;
 
             }
@@ -60,6 +72,9 @@ public class HetDataEdit extends javax.swing.JDialog {
         }
 
         jTable1.setModel(model);
+        jTable2.setModel(model1);
+        new TableWidth(jTable2);
+        new TableWidth(jTable1);
 
     }
 
@@ -72,12 +87,18 @@ public class HetDataEdit extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jTabbedPane1 = new javax.swing.JTabbedPane();
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jTextField1 = new javax.swing.JTextField();
+        jPanel2 = new javax.swing.JPanel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTable2 = new javax.swing.JTable();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -92,7 +113,7 @@ public class HetDataEdit extends javax.swing.JDialog {
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, true, false, false, true, false
+                true, true, false, false, true, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -109,6 +130,11 @@ public class HetDataEdit extends javax.swing.JDialog {
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/pictures/plus.png"))); // NOI18N
         jLabel1.setToolTipText("Sor hozzáadása");
+        jLabel1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel1MouseClicked(evt);
+            }
+        });
 
         jLabel3.setText("Kereső:");
 
@@ -129,7 +155,7 @@ public class HetDataEdit extends javax.swing.JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 467, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 414, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -139,18 +165,80 @@ public class HetDataEdit extends javax.swing.JDialog {
                     .addComponent(jLabel1)
                     .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 193, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(41, 41, 41))
         );
+
+        jTabbedPane1.addTab("Demand", jPanel1);
+
+        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("A hetet befolyásoló tényezők szerkesztése"));
+
+        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null}
+            },
+            new String [] {
+                "Név", "Leírás", "Hatékonyság"
+            }
+        ));
+        jTable2.setCellSelectionEnabled(true);
+        jScrollPane2.setViewportView(jTable2);
+
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/pictures/plus.png"))); // NOI18N
+        jLabel2.setToolTipText("Sor hozzáadása");
+        jLabel2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel2MouseClicked(evt);
+            }
+        });
+
+        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/pictures/setup.png"))); // NOI18N
+        jLabel4.setToolTipText("Beállít");
+        jLabel4.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel4MouseClicked(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 414, Short.MAX_VALUE)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel4))
+                .addGap(0, 0, Short.MAX_VALUE))
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addComponent(jLabel2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel4)
+                .addGap(50, 50, 50))
+        );
+
+        jTabbedPane1.addTab("Tényezők", jPanel2);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 429, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 274, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
@@ -177,14 +265,23 @@ public class HetDataEdit extends javax.swing.JDialog {
                 w.getWeekList().get(i).getGyartasok().clear();
                 for (int n = 0; n < jTable1.getRowCount(); n++) {
 
-                    String[] adatok = new String[6];
-                    adatok[0] = jTable1.getValueAt(n, 0).toString().trim();
-                    adatok[1] = jTable1.getValueAt(n, 1).toString().trim();
-                    adatok[2] = jTable1.getValueAt(n, 2).toString().trim();
-                    adatok[3] = jTable1.getValueAt(n, 3).toString().trim();
-                    adatok[4] = jTable1.getValueAt(n, 4).toString().trim();
-                    adatok[5] = jTable1.getValueAt(n, 5).toString().trim();
-                    w.getWeekList().get(i).getGyartasok().add(adatok);
+                    try {
+                        String[] adatok = new String[6];
+                        adatok[0] = jTable1.getValueAt(n, 0).toString().trim();
+                        adatok[1] = jTable1.getValueAt(n, 1).toString().trim();
+                        try {
+                            adatok[2] = jTable1.getValueAt(n, 2).toString().trim();
+                            adatok[3] = jTable1.getValueAt(n, 3).toString().trim();
+                        } catch (Exception e) {
+                            adatok[2] = "";
+                            adatok[3] = "";
+                        }
+                        adatok[4] = jTable1.getValueAt(n, 4).toString().trim();
+                        adatok[5] = jTable1.getValueAt(n, 5).toString().trim();
+                        w.getWeekList().get(i).getGyartasok().add(adatok);
+
+                    } catch (Exception e) {
+                    }
 
                 }
                 //ki kell nullazni a tablabol az erre a hetre vonatkozo adatokat
@@ -199,15 +296,17 @@ public class HetDataEdit extends javax.swing.JDialog {
 
                 //ujra kell futtatni a kalkulációt 
                 w.getWeekList().get(i).setSajatAdatToTable();
-                //a ws hatékonyságát is belevesszuk
-                w.calcWithWsEff();
-                //a summat is a ws ben
-                w.sumGyartas();
+
                 break;
 
             }
 
         }
+
+        //a ws hatékonyságát is belevesszuk
+        w.calcWithWsEff();
+        //a summat is a ws ben
+        w.sumGyartas();
 
     }
 
@@ -219,8 +318,10 @@ public class HetDataEdit extends javax.swing.JDialog {
             model = (DefaultTableModel) jTable1.getModel();
 
             for (int i = 0; i < model.getRowCount(); i++) {
-
-                model.setValueAt(new DecimalFormat("#.##").format(Double.parseDouble(model.getValueAt(i, 1).toString()) * Double.parseDouble(model.getValueAt(i, 4).toString()) / 60 / 60), i, 5);
+                try {
+                    model.setValueAt(new DecimalFormat("#.##").format(Double.parseDouble(model.getValueAt(i, 1).toString()) * Double.parseDouble(model.getValueAt(i, 4).toString()) / 60 / 60), i, 5);
+                } catch (Exception e) {
+                }
 
             }
 
@@ -231,6 +332,50 @@ public class HetDataEdit extends javax.swing.JDialog {
         reSum();
 
     }//GEN-LAST:event_jTable1KeyReleased
+
+    private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
+        //sor hozzáadása a táblához
+        DefaultTableModel model = new DefaultTableModel();
+        model = (DefaultTableModel) jTable1.getModel();
+        model.addRow(new Object[6]);
+        jTable1.setModel(model);
+    }//GEN-LAST:event_jLabel1MouseClicked
+
+    private void jLabel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseClicked
+        //tényezők táblához sor hozzáadása
+        DefaultTableModel model = new DefaultTableModel();
+        model = (DefaultTableModel) jTable2.getModel();
+        model.addRow(new Object[3]);
+    }//GEN-LAST:event_jLabel2MouseClicked
+
+    private void jLabel4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel4MouseClicked
+        // a hét befolyásoló tényezőinek frissítése
+        //keressük meg melyik hétről van szó
+        for (int i = 0; i < w.getWeekList().size(); i++) {
+            if (w.getWeekList().get(i).getWeekname().equals(w.jTable1.getColumnName(w.jTable1.getSelectedColumn()))) {
+
+                w.getWeekList().get(i).getTenyezoList().clear();
+                //vegigmegyunk a tabla sorain, es ami ki van toltve maradektalalnul azt felvisszuk tenyezokent
+                for (int n = 0; n < jTable2.getRowCount(); n++) {
+                    try {
+                        if (!jTable2.getValueAt(n, 0).equals("") && !jTable2.getValueAt(n, 1).equals("") && !jTable2.getValueAt(n, 2).equals("") && jTable2.getValueAt(n, 0) != null) {
+
+                            Factor f = new Factor(Integer.parseInt(w.getWeekList().get(i).getWeekname()), jTable2.getValueAt(n, 0).toString(), jTable2.getValueAt(n, 1).toString(), Double.parseDouble(jTable2.getValueAt(n, 2).toString()));
+                            w.getWeekList().get(i).getTenyezoList().add(f);
+                            //System.out.println("hozzáadva!");
+                        }
+                    } catch (Exception e) {
+
+                    }
+
+                }
+
+            }
+        }
+        
+        new TableWidth(jTable2);
+
+    }//GEN-LAST:event_jLabel4MouseClicked
 
     /**
      * @param args the command line arguments
@@ -276,10 +421,16 @@ public class HetDataEdit extends javax.swing.JDialog {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTable jTable1;
+    private javax.swing.JTable jTable2;
     private javax.swing.JTextField jTextField1;
     // End of variables declaration//GEN-END:variables
 }

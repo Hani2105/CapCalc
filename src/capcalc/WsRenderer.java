@@ -26,6 +26,12 @@ public class WsRenderer extends DefaultTableCellRenderer {
         this.ws = ws;
     }
 
+//    public SimpleHeaderRenderer() {
+//        setFont(new Font("Consolas", Font.BOLD, 14));
+//        setForeground(Color.BLUE);
+//        setBorder(BorderFactory.createEtchedBorder());
+//    }
+
     public Component getTableCellRendererComponent(JTable table, Object value,
             boolean isSelected, boolean hasFocus, int row, int column) {
 
@@ -41,6 +47,10 @@ public class WsRenderer extends DefaultTableCellRenderer {
         //a tooltip legyen nulla
         c.setToolTipText(null);
 
+        //a header tooltip
+        
+        
+        
         //a sum row szinezese ha sum nagyobb mint a ws oraszama
         if (row == 0 && column > 0) {
 
