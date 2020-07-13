@@ -31,7 +31,6 @@ public class WsRenderer extends DefaultTableCellRenderer {
 //        setForeground(Color.BLUE);
 //        setBorder(BorderFactory.createEtchedBorder());
 //    }
-
     public Component getTableCellRendererComponent(JTable table, Object value,
             boolean isSelected, boolean hasFocus, int row, int column) {
 
@@ -48,20 +47,29 @@ public class WsRenderer extends DefaultTableCellRenderer {
         c.setToolTipText(null);
 
         //a header tooltip
-        
-        
-        
         //a sum row szinezese ha sum nagyobb mint a ws oraszama
         if (row == 0 && column > 0) {
 
             for (int i = 0; i < ws.getWeekList().size(); i++) {
 
                 if (ws.getWeekList().get(i).getWeekname().equals(table.getColumnName(column))) {
+                    try {
 
-                    if (ws.getWeekList().get(i).getOraszam() < Double.parseDouble(table.getValueAt(row, column).toString())) {
+                        //ha 80 % legyen narancs
+                        if (ws.getWeekList().get(i).getOraszam() < Double.parseDouble(table.getValueAt(row, column).toString())) {
 
-                        c.setForeground(Color.red);
+                            c.setForeground(Color.red);
 
+                        } else if (ws.getWeekList().get(i).getOraszam() * 0.8 < Double.parseDouble(table.getValueAt(row, column).toString())) {
+
+                            c.setForeground(Color.orange);
+
+                        } else {
+
+                            c.setForeground(Color.green);
+
+                        }
+                    } catch (Exception e) {
                     }
 
                 }
@@ -78,6 +86,18 @@ public class WsRenderer extends DefaultTableCellRenderer {
             for (int i = 0; i < ws.getWeekList().size(); i++) {
 //ha a hét száma egyezik a column nevével továbbmegyünk
                 if (ws.getWeekList().get(i).getWeekname().equals(table.getColumnName(column))) {
+                    //a hét adatait listázzuk ki
+                    //a hét óraszáma  
+                    tooltiptext += "<span style=\"color:orange;\">A hét óraszáma: </span> " + ws.getWeekList().get(i).getOraszam() + "<br>";
+                    //a tényezők
+                    for (int t = 0; t < ws.getWeekList().get(i).getTenyezoList().size(); t++) {
+
+                        tooltiptext += "<span style=\"color:orange;\">Tényező: </span>" + ws.getWeekList().get(i).getTenyezoList().get(t).getNeve() + " " + ws.getWeekList().get(i).getTenyezoList().get(t).getLeiras() + " " + ws.getWeekList().get(i).getTenyezoList().get(t).getTenyezo() + "<br>";
+
+                    }
+
+                    tooltiptext += "<br>";
+
 //bepörgetjük az adatait és ha egyezik a prefix a sor elejen szereplovel hozzaadjuk a tooltip texthez
                     for (int n = 0; n < ws.getWeekList().get(i).getGyartasok().size(); n++) {
                         if (ws.getWeekList().get(i).getGyartasok().get(n)[0].substring(0, 5).equals(table.getValueAt(row, 0).toString())) {

@@ -20,7 +20,7 @@ public class Week {
     private String weekname = "";
     private ArrayList<String[]> gyartasok = new ArrayList<>();
     private WorkStation ws = null;
-    private double oraszam = 10.0;
+    private double oraszam = 168.0;
     private ArrayList<Factor> tenyezolist = new ArrayList<>();
 
     public Week(String wsname, String weekname, WorkStation ws) {
@@ -104,9 +104,29 @@ public class Week {
 
     public void setSajatAdatToTable() {
 //ez teszi ki a saját gyártásait a workstation táblájába
+
         //be kell jarni a tablat, meg kell keresni a prefixet es a hetnek a szamat
         DefaultTableModel model = new DefaultTableModel();
         model = (DefaultTableModel) ws.jTable1.getModel();
+        //kinullazzuk a hethez tartozó adatokat a modellben
+        //meg kell keresni h hányadik hét
+        int hetoszlopa = 0;
+        for (int i = 0; i < ws.jTable1.getColumnCount(); i++) {
+
+            if (ws.jTable1.getColumnName(i).equals(getWeekname())) {
+
+                hetoszlopa = i;
+            }
+
+        }
+
+        for (int r = 0; r < model.getRowCount(); r++) {
+            try {
+                model.setValueAt(null, r, hetoszlopa);
+            } catch (Exception e) {
+            }
+
+        }
 
         //bejarjuk a sajat adatokat es megprobaljuk megkeresni a prefixet
         outerloop:
@@ -121,17 +141,31 @@ public class Week {
                     for (int c = 1; c < model.getColumnCount(); c++) {
 
                         if (model.getColumnName(c).equals(getWeekname())) {
+                            //ki kell számolni az uj adatot
+                            double ujadat = 0.00;
+                            try {
+                                ujadat = Double.parseDouble(getGyartasok().get(i)[1]) * Double.parseDouble(getGyartasok().get(i)[4]) / 60 / 60;
+                                for (int f = 0; f < getTenyezoList().size(); f++) {
+
+                                    ujadat = ujadat / getTenyezoList().get(f).getTenyezo();
+
+                                }
+                                //a ws hatekonysagat is figyelembe vesszuk
+                                ujadat = ujadat / ws.getHatekonysag();
+                                //a tarazasi időt is figyelembe kell venni
+                                ujadat += ws.getTarazasiido();
+                            } catch (Exception e) {
+                            }
+
                             //be kell allitani az addatokat a cellaba
                             try {
-                                //a gyartasidot ki kell szamolni, demand * qty /60 /60 
-                                gyartasido += Double.parseDouble(model.getValueAt(r, c).toString()) + ((Double.parseDouble(getGyartasok().get(i)[1]) * Double.parseDouble(getGyartasok().get(i)[4])) / 60 / 60);
+
+                                gyartasido += Double.parseDouble(model.getValueAt(r, c).toString()) + ujadat;
 
                             } catch (Exception e) {
-                                try {
-                                    gyartasido = Double.parseDouble(getGyartasok().get(i)[1]) * Double.parseDouble(getGyartasok().get(i)[4]) / 60 / 60;
-                                } catch (Exception ex) {
-                                }
+                                gyartasido = ujadat;
                             }
+
                             model.setValueAt(new DecimalFormat("#.##").format(gyartasido), r, c);
 
                         }
@@ -151,14 +185,27 @@ public class Week {
 
                 if (model.getColumnName(c).equals(getWeekname())) {
                     //be kell allitani az addatokat a cellaba
+                    //ki kell számolni az uj adatot
+                    double ujadat = 0.00;
                     try {
-                        gyartasido += Double.parseDouble(model.getValueAt(model.getRowCount() - 1, c).toString()) + ((Double.parseDouble(getGyartasok().get(i)[1]) * Double.parseDouble(getGyartasok().get(i)[4])) / 60 / 60);
-                    } catch (Exception e) {
-                        try {
-                            gyartasido = Double.parseDouble(getGyartasok().get(i)[1]) * Double.parseDouble(getGyartasok().get(i)[4]) / 60 / 60;
-                        } catch (Exception ex) {
+                        ujadat = Double.parseDouble(getGyartasok().get(i)[1]) * Double.parseDouble(getGyartasok().get(i)[4]) / 60 / 60;
+                        for (int f = 0; f < getTenyezoList().size(); f++) {
+
+                            ujadat = ujadat / getTenyezoList().get(f).getTenyezo();
+
                         }
+                        //figyelembe kell venni az állomáshatékonyságát is
+                        ujadat = ujadat / ws.getHatekonysag();
+                        //a tarazasi időt is figyelembe kell venni
+                        ujadat += ws.getTarazasiido();
+                    } catch (Exception e) {
                     }
+                    try {
+                        gyartasido += Double.parseDouble(model.getValueAt(model.getRowCount() - 1, c).toString()) + ujadat;
+                    } catch (Exception e) {
+                        gyartasido = ujadat;
+                    }
+
                     model.setValueAt(new DecimalFormat("#.##").format(gyartasido), model.getRowCount() - 1, c);
                     continue outerloop;
 
@@ -168,6 +215,28 @@ public class Week {
 
         }
 
+        //ki kell szamolni a summat es beírni a legfelső sorba
+        for (int c = 1; c < model.getColumnCount(); c++) {
+
+            if (model.getColumnName(c).equals(getWeekname())) {
+
+                //bejarjuk a sorokat es osszeadjuk h mizu
+                double osszeg = 0.00;
+                for (int r = 1; r < model.getRowCount(); r++) {
+                    try {
+                        osszeg += Double.parseDouble(model.getValueAt(r, c).toString());
+                    } catch (Exception e) {
+                    }
+                }
+                model.setValueAt(new DecimalFormat("#.##").format(osszeg), 0, c);
+                break;
+
+            }
+
+        }
+
+        ws.jTable1.setModel(model);
+        new TableWidth(ws.jTable1);
     }
 
 }

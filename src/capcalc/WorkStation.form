@@ -21,12 +21,12 @@
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="torlesActionPerformed"/>
           </Events>
         </MenuItem>
-        <MenuItem class="javax.swing.JMenuItem" name="edithetora">
+        <MenuItem class="javax.swing.JMenuItem" name="editws">
           <Properties>
-            <Property name="text" type="java.lang.String" value="&#xd6;sszes h&#xe9;t &#xf3;rasz&#xe1;ma"/>
+            <Property name="text" type="java.lang.String" value="&#xc1;llom&#xe1;s szerkeszt&#xe9;se"/>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="edithetoraActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="editwsActionPerformed"/>
           </Events>
         </MenuItem>
       </SubComponents>
@@ -138,6 +138,7 @@
           </Properties>
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+            <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
           </AuxValues>
         </Component>
       </SubComponents>

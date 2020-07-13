@@ -45,7 +45,7 @@ public class MainWindow extends javax.swing.JFrame {
     //a session adatok
     public static SessionObject so = new SessionObject();
     public AddWorkstation addws = new AddWorkstation(this, false, this);
-    public osszesHetEdit ohe = new osszesHetEdit(this, false);
+    public workStationEdit ohe = new workStationEdit(this, false);
     //a ws-ek kulonallo heteinek adatainak módosítója
     public HetDataEdit hde = new HetDataEdit(this, false);
     //a workstationok pozicioja
@@ -73,7 +73,7 @@ public class MainWindow extends javax.swing.JFrame {
             getKapcsolatDatafromSo();
             //szamolunk is egyet
             try {
-                osszegzes();
+                calcOsszegzes();
             } catch (ParseException ex) {
                 Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -132,13 +132,14 @@ public class MainWindow extends javax.swing.JFrame {
         jTextField5 = new javax.swing.JTextField();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
         jMenuItem2 = new javax.swing.JMenuItem();
         jMenuItem3 = new javax.swing.JMenuItem();
         jMenuItem4 = new javax.swing.JMenuItem();
         jMenuItem5 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         jMenuItem6 = new javax.swing.JMenuItem();
+        jMenu3 = new javax.swing.JMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -157,6 +158,7 @@ public class MainWindow extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("Kihasználtság", jScrollPane6);
 
+        jTable1.setAutoCreateRowSorter(true);
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -215,6 +217,7 @@ public class MainWindow extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("SMT ciklusidők", jPanel1);
 
+        jTable2.setAutoCreateRowSorter(true);
         jTable2.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -273,6 +276,7 @@ public class MainWindow extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("Backend ciklusidők", jPanel3);
 
+        jTable3.setAutoCreateRowSorter(true);
         jTable3.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -331,6 +335,7 @@ public class MainWindow extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("Demand", jPanel4);
 
+        jTable4.setAutoCreateRowSorter(true);
         jTable4.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null}
@@ -399,6 +404,11 @@ public class MainWindow extends javax.swing.JFrame {
             }
         ));
         jTable5.setCellSelectionEnabled(true);
+        jTable5.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jTable5KeyPressed(evt);
+            }
+        });
         jScrollPane5.setViewportView(jTable5);
 
         jLabel9.setText("Kereső:");
@@ -434,14 +444,6 @@ public class MainWindow extends javax.swing.JFrame {
         jTabbedPane1.addTab("Összegzés", jPanel6);
 
         jMenu1.setText("Adatok betöltése");
-
-        jMenuItem1.setText("Állomás hozzáadása");
-        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem1ActionPerformed(evt);
-            }
-        });
-        jMenu1.add(jMenuItem1);
 
         jMenuItem2.setText("Ciklusidők lekérése adatbázisból");
         jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
@@ -489,6 +491,18 @@ public class MainWindow extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenu2);
 
+        jMenu3.setText("Állomás hozzáadása");
+
+        jMenuItem1.setText("Állomás hozzáadása");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+        jMenu3.add(jMenuItem1);
+
+        jMenuBar1.add(jMenu3);
+
         setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -504,13 +518,6 @@ public class MainWindow extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        // állomás hozzáadása
-
-        addws.setVisible(true);
-
-    }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     //az smt ciklusidos tábla sorainak törlése
     private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
@@ -738,11 +745,43 @@ public class MainWindow extends javax.swing.JFrame {
 //az osszegzes futtatasa
     private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
         try {
-            osszegzes();
+            calcOsszegzes();
         } catch (ParseException ex) {
             Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_jMenuItem6ActionPerformed
+
+    private void jTable5KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTable5KeyPressed
+        //az összegzés mentése az so.ba
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+
+            //kikapcsoljuk az editalast
+            if (jTable5.isEditing()) {
+
+                jTable5.getCellEditor().cancelCellEditing();
+            }
+
+            osszegzesToSo();
+            //frissitsuk le a meglevo ws-eket az uj adattal
+            for (int i = 0; i < jPanel2.getComponentCount(); i++) {
+
+                if (jPanel2.getComponent(i) instanceof WorkStation) {
+
+                    WorkStation ws = (WorkStation) jPanel2.getComponent(i);
+                    ws.setStartData();
+                    ws.addWeeksToWs();
+
+                }
+
+            }
+
+        }
+    }//GEN-LAST:event_jTable5KeyPressed
+
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        // állomás hozzáadása //állomás hozzáadása
+        addws.setVisible(true);
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     public void getKapcsolatDatafromSo() {
         // TODO add your handling code here:
@@ -1025,9 +1064,39 @@ public class MainWindow extends javax.swing.JFrame {
                 "Sikeres módosítás");
 
     }
-    //a megadott adatok alapjan kell csinalni egy osszegzest
 
-    public void osszegzes() throws ParseException {
+    //ha kezzel belenyulunk az osszegzesbe azt is mentsuk vissza az so.ba
+    public void osszegzesToSo() {
+
+        //kiuritjuk az so adatait
+        so.getOsszegzes().clear();
+        DefaultTableModel model = new DefaultTableModel();
+        model = (DefaultTableModel) jTable5.getModel();
+
+        //bejarjuk a tablat es az adatait betesszuk az so-ba
+        for (int i = 0; i < model.getRowCount(); i++) {
+            try {
+                String[] adatok = new String[6];
+                adatok[0] = model.getValueAt(i, 0).toString();
+                adatok[1] = model.getValueAt(i, 1).toString();
+                adatok[2] = model.getValueAt(i, 2).toString();
+                adatok[3] = model.getValueAt(i, 3).toString();
+                adatok[4] = model.getValueAt(i, 4).toString();
+                adatok[5] = model.getValueAt(i, 5).toString();
+                so.getOsszegzes().add(adatok);
+            } catch (Exception e) {
+
+            }
+
+        }
+
+        JOptionPane.showMessageDialog(this,
+                "Sikeres módosítás");
+
+    }
+
+    //a megadott adatok alapjan kell csinalni egy osszegzest
+    public void calcOsszegzes() throws ParseException {
         //kinullazzuk a tablat
         DefaultTableModel model = new DefaultTableModel();
         model = (DefaultTableModel) jTable5.getModel();
@@ -1233,6 +1302,7 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;

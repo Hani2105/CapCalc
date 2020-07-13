@@ -23,26 +23,36 @@ public class WorkStation extends javax.swing.JPanel {
     private double hatekonysag = 0.00;
     private ArrayList<Week> weekList = new ArrayList<>();
     MainWindow m;
+    private double tarazasiido = 0.00;
 
-    public WorkStation(String name, double hatekonysag, int szelesseg, int magassag, MainWindow m) {
+    public WorkStation(String name, double hatekonysag, int szelesseg, int magassag, MainWindow m, double tarazasiido) {
         initComponents();
         this.m = m;
         jTable1.getTableHeader().setDefaultRenderer(new WsHeaderRenderer(this));
         jTable1.setDefaultRenderer(Object.class, new WsRenderer(this));
         setName(name);
         setHatekonysag(hatekonysag);
+        setTarazasiido(tarazasiido);
         setSize(MainWindow.jPanel2.getSize().width, magassag);
         //a pozicioja beallitasa
         setPosition();
+        //beallitjuk a jlistet
+        setJlist();
         //beallitjuk a nevét és a hatékonyságot a táblába
         setStartData();
-        //ez számol, először a heteket teszi be magához, a hetek begyüjtik a saját adataikat és kiteszik a táblába
-        calCulation();
-        //betesszuk a summa sorba az adatokat
-        sumGyartas(); //a pozicioja beallitasa
+        //hozzáadjuk a heteit
+        addWeeksToWs();
         //beallitjuk a ws magassagat
         setWsHeight();
 
+    }
+
+    public double getTarazasiido() {
+        return tarazasiido;
+    }
+
+    public void setTarazasiido(double tarazasiido) {
+        this.tarazasiido = tarazasiido;
     }
 
     public ArrayList<Week> getWeekList() {
@@ -118,45 +128,6 @@ public class WorkStation extends javax.swing.JPanel {
 
     }
 
-    public void calCulation() {
-        //ez a metódus szedi össze a teljes adatot amit az állomás megjelenít
-        //ki kell talalni, hogy hány hetet kell létrehozni az állomásban, létrehozza és a hetek begyüjtik a sajat adataikat
-        addWeeksToWs();
-        //az állomás alap hatékonyságának figyelembe vétele
-        calcWithWsEff();
-
-    }
-//a táblában jelenleg lévő adatokkal fut még egy kört és lerontja a ws hatékonyságának számával
-
-    public void calcWithWsEff() {
-
-        DefaultTableModel model = new DefaultTableModel();
-        model = (DefaultTableModel) jTable1.getModel();
-        //csak egy sor legyen a modellben
-        model.setRowCount(1);
-        //kitetetjuk az osszes het adatat ujbol a tablaba
-        for (int i = 0; i < getWeekList().size(); i++) {
-
-            getWeekList().get(i).setSajatAdatToTable();
-
-        }
-
-        for (int i = 1; i < model.getRowCount(); i++) {
-
-            for (int c = 1; c < model.getColumnCount(); c++) {
-                try {
-                    model.setValueAt(new DecimalFormat("#.##").format(Double.parseDouble(model.getValueAt(i, c).toString()) / this.getHatekonysag()), i, c);
-                } catch (Exception e) {
-                }
-            }
-
-        }
-
-        //ujrafuttatjuk a summat
-        sumGyartas();
-
-    }
-
     public void addWeeksToWs() {
         //az osszegzes listabaol kell kiszedni azokat az elemeket amikhez ez a sor tartozik
         int minhet = 999999;
@@ -208,44 +179,28 @@ public class WorkStation extends javax.swing.JPanel {
 
     }
 
-    //összegzi a gyártásokat a summa sorba
-    public void sumGyartas() {
-
-        DefaultTableModel model = new DefaultTableModel();
-        model = (DefaultTableModel) jTable1.getModel();
-        for (int c = 1; c < model.getColumnCount(); c++) {
-            double qty = 0;
-            for (int r = 1; r < model.getRowCount(); r++) {
-                try {
-                    qty += Double.parseDouble(model.getValueAt(r, c).toString());
-                } catch (Exception e) {
-                }
-
-            }
-
-            model.setValueAt(new DecimalFormat("#.##").format(qty), 0, c);
-
-        }
-
-        jTable1.setModel(model);
-        new TableWidth(jTable1);
-
-    }
-
     public void setStartData() {
 //az alap adatok beállítása, név, alap hatékonyság, a jélistbe
 
-        DefaultListModel listModel = new DefaultListModel();
-        listModel.addElement("Állomás neve: " + getName());
-        listModel.addElement("Állomás alap hatékonysága: " + getHatekonysag());
-        jList1.setModel(listModel);
+       
         //a táblába beállítjuk a sum erteket
         DefaultTableModel model = new DefaultTableModel();
         model = (DefaultTableModel) jTable1.getModel();
         model.setRowCount(0);
+        model.setColumnCount(1);
         model.addRow(new Object[]{"SUM:"});
         jTable1.setModel(model);
 
+    }
+    
+    public void setJlist(){
+    
+        DefaultListModel listModel = new DefaultListModel();
+        listModel.addElement("<html><span style=\"color:red;\">Állomás neve: </span>" + getName());
+        listModel.addElement("<html><span style=\"color:red;\">Állomás alap hatékonysága: </span>" + getHatekonysag());
+        listModel.addElement(("<html><span style=\"color:red;\">Tárazási idő termékenként: </span>" + getTarazasiido()));
+        jList1.setModel(listModel);
+    
     }
 
     /**
@@ -259,7 +214,7 @@ public class WorkStation extends javax.swing.JPanel {
 
         jPopupMenu1 = new javax.swing.JPopupMenu();
         torles = new javax.swing.JMenuItem();
-        edithetora = new javax.swing.JMenuItem();
+        editws = new javax.swing.JMenuItem();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
@@ -274,13 +229,13 @@ public class WorkStation extends javax.swing.JPanel {
         });
         jPopupMenu1.add(torles);
 
-        edithetora.setText("Összes hét óraszáma");
-        edithetora.addActionListener(new java.awt.event.ActionListener() {
+        editws.setText("Állomás szerkesztése");
+        editws.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                edithetoraActionPerformed(evt);
+                editwsActionPerformed(evt);
             }
         });
-        jPopupMenu1.add(edithetora);
+        jPopupMenu1.add(editws);
 
         jPopupMenu1.getAccessibleContext().setAccessibleParent(this);
 
@@ -346,11 +301,11 @@ public class WorkStation extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_formMousePressed
 
-    private void edithetoraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_edithetoraActionPerformed
+    private void editwsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editwsActionPerformed
         //hetedit visible
         m.ohe.setVisible(true, this);
 
-    }//GEN-LAST:event_edithetoraActionPerformed
+    }//GEN-LAST:event_editwsActionPerformed
 
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
         m.hde.setVisible(true, this);
@@ -358,9 +313,9 @@ public class WorkStation extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JMenuItem edithetora;
+    private javax.swing.JMenuItem editws;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JList<String> jList1;
+    public javax.swing.JList<String> jList1;
     private javax.swing.JPopupMenu jPopupMenu1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;

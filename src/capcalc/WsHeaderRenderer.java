@@ -33,10 +33,10 @@ public class WsHeaderRenderer extends DefaultTableCellRenderer {
 
             //ha megegyezik a hét neve a column nevével akkor beállítjuk tooltipnek a faktorokat és a hét óráját
             if (w.getWeekList().get(i).getWeekname().equals(table.getColumnName(column))) {
-                tooltiptext += "<span style=\"color:red;\">Hét óraszáma: </span>" + w.getWeekList().get(i).getOraszam() + "<br>";
+                tooltiptext += "<span style=\"color:orange;\">Hét óraszáma: </span>" + w.getWeekList().get(i).getOraszam() + "<br>";
                 for (int n = 0; n < w.getWeekList().get(i).getTenyezoList().size(); n++) {
 
-                    tooltiptext += "<span style=\"color:red;\">Neve: </span>" + w.getWeekList().get(i).getTenyezoList().get(n).getNeve() + "<span style=\"color:red;\"> Leírása: </span>" + w.getWeekList().get(i).getTenyezoList().get(n).getLeiras() + "<span style=\"color:red;\"> Hatékonyság: </span>" + w.getWeekList().get(i).getTenyezoList().get(n).getTenyezo() + "<br>";
+                    tooltiptext += "<span style=\"color:orange;\">Neve: </span>" + w.getWeekList().get(i).getTenyezoList().get(n).getNeve() + "<span style=\"color:red;\"> Leírása: </span>" + w.getWeekList().get(i).getTenyezoList().get(n).getLeiras() + "<span style=\"color:red;\"> Hatékonyság: </span>" + w.getWeekList().get(i).getTenyezoList().get(n).getTenyezo() + "<br>";
 
                 }
                
