@@ -6,6 +6,7 @@
 package capcalc;
 
 import java.awt.Component;
+import java.awt.Font;
 import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -43,6 +44,7 @@ public class WsHeaderRenderer extends DefaultTableCellRenderer {
             }
 
         }
+        c.setFont(new Font(Font.DIALOG, Font.BOLD, 11));
         c.setToolTipText(tooltiptext);
         return c;
 

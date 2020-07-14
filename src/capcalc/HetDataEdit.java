@@ -62,7 +62,7 @@ public class HetDataEdit extends javax.swing.JDialog {
 
                 for (int n = 0; n < w.getWeekList().get(i).getGyartasok().size(); n++) {
                     try {
-                        model.addRow(new Object[]{w.getWeekList().get(i).getGyartasok().get(n)[0], w.getWeekList().get(i).getGyartasok().get(n)[1], w.getWeekList().get(i).getGyartasok().get(n)[2], w.getWeekList().get(i).getGyartasok().get(n)[3], new DecimalFormat("#.##").format(Double.parseDouble(w.getWeekList().get(i).getGyartasok().get(n)[4])), new DecimalFormat("#.##").format(Double.parseDouble(w.getWeekList().get(i).getGyartasok().get(n)[5]))});
+                        model.addRow(new Object[]{w.getWeekList().get(i).getGyartasok().get(n)[0], w.getWeekList().get(i).getGyartasok().get(n)[1], w.getWeekList().get(i).getGyartasok().get(n)[2], w.getWeekList().get(i).getGyartasok().get(n)[3], new DecimalFormat("#.##").format(Double.parseDouble(w.getWeekList().get(i).getGyartasok().get(n)[4])), new DecimalFormat("#.##").format(Double.parseDouble(w.getWeekList().get(i).getGyartasok().get(n)[5])),new DecimalFormat("#.##").format(Double.parseDouble(w.getWeekList().get(i).getGyartasok().get(n)[6]))});
                     } catch (Exception e) {
                     }
                 }
@@ -119,11 +119,11 @@ public class HetDataEdit extends javax.swing.JDialog {
 
             },
             new String [] {
-                "PartNumber", "Demand", "StartWeek", "Station", "CT/DB", "Gyártási idő"
+                "PartNumber", "Demand", "StartWeek", "Station", "CT/DB", "Gyártási idő", "Eff"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                true, true, false, false, true, false
+                true, true, false, false, true, false, true
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -164,8 +164,8 @@ public class HetDataEdit extends javax.swing.JDialog {
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 414, Short.MAX_VALUE)
+                .addContainerGap(284, Short.MAX_VALUE))
+            .addComponent(jScrollPane1)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -234,7 +234,7 @@ public class HetDataEdit extends javax.swing.JDialog {
                 .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 414, Short.MAX_VALUE)
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 483, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -253,7 +253,7 @@ public class HetDataEdit extends javax.swing.JDialog {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 429, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 498, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -288,7 +288,7 @@ public class HetDataEdit extends javax.swing.JDialog {
                 for (int n = 0; n < model.getRowCount(); n++) {
 
                     try {
-                        String[] adatok = new String[6];
+                        String[] adatok = new String[7];
                         adatok[0] = model.getValueAt(n, 0).toString().trim();
                         adatok[1] = model.getValueAt(n, 1).toString().trim();
                         try {
@@ -300,6 +300,7 @@ public class HetDataEdit extends javax.swing.JDialog {
                         }
                         adatok[4] = model.getValueAt(n, 4).toString().trim();
                         adatok[5] = model.getValueAt(n, 5).toString().trim();
+                        adatok[6] = model.getValueAt(n, 6).toString().trim();
                         w.getWeekList().get(i).getGyartasok().add(adatok);
 
                     } catch (Exception e) {
@@ -326,7 +327,7 @@ public class HetDataEdit extends javax.swing.JDialog {
 
             for (int i = 0; i < model.getRowCount(); i++) {
                 try {
-                    model.setValueAt(new DecimalFormat("#.##").format(Double.parseDouble(model.getValueAt(i, 1).toString()) * Double.parseDouble(model.getValueAt(i, 4).toString()) / 60 / 60), i, 5);
+                    model.setValueAt(new DecimalFormat("#.##").format(Double.parseDouble(model.getValueAt(i, 1).toString()) * Double.parseDouble(model.getValueAt(i, 4).toString()) / 60 / 60 / Double.parseDouble(model.getValueAt(i, 6).toString())), i, 5);
                 } catch (Exception e) {
                 }
 

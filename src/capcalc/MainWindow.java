@@ -397,10 +397,10 @@ public class MainWindow extends javax.swing.JFrame {
         jTable5.setAutoCreateRowSorter(true);
         jTable5.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null}
+                {null, null, null, null, null, null, null}
             },
             new String [] {
-                "PartNumber", "Demand", "Start Week", "Station", "CT/DB", "Gyártási idő"
+                "PartNumber", "Demand", "Start Week", "Station", "CT/DB", "Gyártási idő", "Efficiency"
             }
         ));
         jTable5.setCellSelectionEnabled(true);
@@ -768,8 +768,14 @@ public class MainWindow extends javax.swing.JFrame {
                 if (jPanel2.getComponent(i) instanceof WorkStation) {
 
                     WorkStation ws = (WorkStation) jPanel2.getComponent(i);
-                    ws.setStartData();
-                    ws.addWeeksToWs();
+
+                    for (int k = 0; k < ws.getWeekList().size(); k++) {
+//                        System.out.println(ws.getWeekList().get(k).getTenyezoList().size());
+
+                        ws.getWeekList().get(k).getSajatAdat();
+                        ws.getWeekList().get(k).setSajatAdatToTable();
+
+                    }
 
                 }
 
@@ -1076,22 +1082,20 @@ public class MainWindow extends javax.swing.JFrame {
         //bejarjuk a tablat es az adatait betesszuk az so-ba
         for (int i = 0; i < model.getRowCount(); i++) {
             try {
-                String[] adatok = new String[6];
+                String[] adatok = new String[7];
                 adatok[0] = model.getValueAt(i, 0).toString();
                 adatok[1] = model.getValueAt(i, 1).toString();
                 adatok[2] = model.getValueAt(i, 2).toString();
                 adatok[3] = model.getValueAt(i, 3).toString();
                 adatok[4] = model.getValueAt(i, 4).toString();
                 adatok[5] = model.getValueAt(i, 5).toString();
+                adatok[6] = model.getValueAt(i, 6).toString();
                 so.getOsszegzes().add(adatok);
             } catch (Exception e) {
 
             }
 
         }
-
-        JOptionPane.showMessageDialog(this,
-                "Sikeres módosítás");
 
     }
 
@@ -1133,13 +1137,14 @@ public class MainWindow extends javax.swing.JFrame {
 //akkor megyünk tovább ha van default ws, ha nincs akkor azt írjuk be az összegzésbe, hogy az kellene..
             if (defaultws.equals("")) {
 
-                String[] adatok = new String[11];
+                String[] adatok = new String[7];
                 adatok[0] = pn;
                 adatok[1] = String.valueOf(qty);
                 adatok[2] = startdate;
                 adatok[3] = "Nincs default állomás!";
                 adatok[4] = "";
                 adatok[5] = "";
+                adatok[6] = "";
 
                 so.getOsszegzes().add(adatok);
                 model.addRow(adatok);
@@ -1149,6 +1154,7 @@ public class MainWindow extends javax.swing.JFrame {
             else if (!defaultws.equals("")) {
                 //a cycletime
                 double ct = 0.00;
+                double eff = 0.00;
                 //panelizacio
 
                 for (int c = 0; c < so.getSmtcycletime().size(); c++) {
@@ -1160,6 +1166,8 @@ public class MainWindow extends javax.swing.JFrame {
                             if (so.getSmtcycletime().get(c)[8] != null) {
 
                                 ct += Double.parseDouble(so.getSmtcycletime().get(c)[8]) / Double.parseDouble(so.getSmtcycletime().get(c)[5]);
+                                eff = Double.parseDouble(so.getSmtcycletime().get(c)[9]) / 100;
+                                
                                 continue;
                             }
                         } catch (Exception e) {
@@ -1170,6 +1178,7 @@ public class MainWindow extends javax.swing.JFrame {
                             if (so.getSmtcycletime().get(c)[7] != null) {
 
                                 ct += Double.parseDouble(so.getSmtcycletime().get(c)[7]) / Double.parseDouble(so.getSmtcycletime().get(c)[5]);
+                                eff = Double.parseDouble(so.getSmtcycletime().get(c)[9]) / 100;
                                 continue;
                             }
                         } catch (Exception e) {
@@ -1178,6 +1187,7 @@ public class MainWindow extends javax.swing.JFrame {
                             if (so.getSmtcycletime().get(c)[6] != null) {
 
                                 ct += Double.parseDouble(so.getSmtcycletime().get(c)[6]) / Double.parseDouble(so.getSmtcycletime().get(c)[5]);
+                                eff = Double.parseDouble(so.getSmtcycletime().get(c)[9]) / 100;
                                 continue;
                             }
                         } catch (Exception e) {
@@ -1190,13 +1200,14 @@ public class MainWindow extends javax.swing.JFrame {
 //ha végigértünk és nulla a ct akkor kiirjuk, hogy nincs ciklusido smt-n
                 if (ct == 0.00) {
 
-                    String[] adatok = new String[6];
+                    String[] adatok = new String[7];
                     adatok[0] = pn;
                     adatok[1] = String.valueOf(qty);
                     adatok[2] = startdate;
                     adatok[3] = defaultws;
                     adatok[4] = "Nincs megadott ciklusidő SMT-n!";
                     adatok[5] = "";
+                    adatok[6] = "";
                     so.getOsszegzes().add(adatok);
                     model.addRow(adatok);
 
@@ -1204,14 +1215,15 @@ public class MainWindow extends javax.swing.JFrame {
                 else if (ct > 0.00) {
 //ki kell számolni az össz igénybe vett időt
 //a ciklusidők panel szinten vannak megadva az adatbazisban!!!!!!!!!!!!!!!!!!!!!!
-                    String[] adatok = new String[6];
+                    String[] adatok = new String[7];
                     adatok[0] = pn;
                     adatok[1] = String.valueOf(qty);
                     adatok[2] = startdate;
                     adatok[3] = defaultws;
                     adatok[4] = new DecimalFormat("#.##").format(ct);
-                    double idoigeny = ((ct * qty) / 60) / 60;
+                    double idoigeny = ((ct * qty) / 60) / 60 / eff;
                     adatok[5] = String.valueOf(idoigeny);
+                    adatok[6] = String.valueOf(eff);
 
 //meg kell nezni, hogy eltezik e mar ilyen adat a listben es ha igen akkor csak ossze kell adni az ertekeket es nem uj sort letrehozni
                     so.getOsszegzes().add(adatok);

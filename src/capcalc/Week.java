@@ -144,7 +144,8 @@ public class Week {
                             //ki kell számolni az uj adatot
                             double ujadat = 0.00;
                             try {
-                                ujadat = Double.parseDouble(getGyartasok().get(i)[1]) * Double.parseDouble(getGyartasok().get(i)[4]) / 60 / 60;
+                                //darabszam * ciklusido / pn efficency és ez orásítva
+                                ujadat = Double.parseDouble(getGyartasok().get(i)[1]) * Double.parseDouble(getGyartasok().get(i)[4]) / 60 / 60 / Double.parseDouble(getGyartasok().get(i)[6]) ;
                                 for (int f = 0; f < getTenyezoList().size(); f++) {
 
                                     ujadat = ujadat / getTenyezoList().get(f).getTenyezo();
@@ -188,7 +189,8 @@ public class Week {
                     //ki kell számolni az uj adatot
                     double ujadat = 0.00;
                     try {
-                        ujadat = Double.parseDouble(getGyartasok().get(i)[1]) * Double.parseDouble(getGyartasok().get(i)[4]) / 60 / 60;
+                        //darabszam * ciklusido / pn efficency és ez orásítva
+                        ujadat = Double.parseDouble(getGyartasok().get(i)[1]) * Double.parseDouble(getGyartasok().get(i)[4]) / 60 / 60 / Double.parseDouble(getGyartasok().get(i)[6]);
                         for (int f = 0; f < getTenyezoList().size(); f++) {
 
                             ujadat = ujadat / getTenyezoList().get(f).getTenyezo();

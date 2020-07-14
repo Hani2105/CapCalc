@@ -119,6 +119,9 @@ public class WsRenderer extends DefaultTableCellRenderer {
             c.setToolTipText(tooltiptext);
 
         }
+        
+
+        
 
         return c;
 
