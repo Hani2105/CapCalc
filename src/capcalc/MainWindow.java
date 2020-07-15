@@ -7,31 +7,40 @@ package capcalc;
 
 import java.awt.event.KeyEvent;
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
+import org.apache.poi.ss.usermodel.ClientAnchor;
+import org.apache.poi.ss.usermodel.Comment;
+import org.apache.poi.ss.usermodel.CreationHelper;
+import org.apache.poi.ss.usermodel.Drawing;
+import org.apache.poi.ss.usermodel.RichTextString;
+import org.apache.poi.xssf.usermodel.XSSFCellStyle;
+import org.apache.poi.xssf.usermodel.XSSFFont;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.IndexedColors;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.FillPatternType;
 
 /**
  *
@@ -140,6 +149,8 @@ public class MainWindow extends javax.swing.JFrame {
         jMenuItem6 = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
+        jMenu4 = new javax.swing.JMenu();
+        jMenuItem7 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -503,6 +514,18 @@ public class MainWindow extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenu3);
 
+        jMenu4.setText("Export");
+
+        jMenuItem7.setText("Export to excel");
+        jMenuItem7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem7ActionPerformed(evt);
+            }
+        });
+        jMenu4.add(jMenuItem7);
+
+        jMenuBar1.add(jMenu4);
+
         setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -788,6 +811,170 @@ public class MainWindow extends javax.swing.JFrame {
         // állomás hozzáadása //állomás hozzáadása
         addws.setVisible(true);
     }//GEN-LAST:event_jMenuItem1ActionPerformed
+
+    private void jMenuItem7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem7ActionPerformed
+        try {
+            //exportálás excelbe
+            exportToExcel();
+        } catch (IOException ex) {
+            Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jMenuItem7ActionPerformed
+
+    public void exportToExcel() throws FileNotFoundException, IOException {
+
+        XSSFWorkbook workbook = new XSSFWorkbook();
+        XSSFSheet sheet = workbook.createSheet("Állomások");
+        workbook.createSheet("Összegzés");
+        //cella stílus
+        CellStyle my_style = workbook.createCellStyle();
+        XSSFFont my_font = workbook.createFont();
+        my_font.setBold(true);
+        my_style.setFont(my_font);
+        my_style.setFillForegroundColor(IndexedColors.GREEN.getIndex());
+        my_style.setFillPattern(FillPatternType.SOLID_FOREGROUND); 
+        //a kommenthez kell
+        CreationHelper factory = workbook.getCreationHelper();
+        Drawing drawing = sheet.createDrawingPatriarch();
+        // When the comment box is visible, have it show in a 1x3 space
+        ClientAnchor anchor = factory.createClientAnchor();
+        Week wk = null;
+
+        //ki kell szedni az állomások adatait egy objectumba
+        int rowCount = 0;
+        int columnCount = 0;
+        for (int i = 0; i < jPanel2.getComponentCount(); i++) {
+            if (jPanel2.getComponent(i) instanceof WorkStation) {
+
+                WorkStation ws = (WorkStation) jPanel2.getComponent(i);
+                //kellenek a columnanme adatok (hetek száma)
+                //csinálunk egy sort
+                columnCount = 0;
+                rowCount++;
+                Row row = sheet.createRow(++rowCount);
+                //írjuk ki az állomás adatait, név, táarási idő, hatékonyság
+                Cell cell = row.createCell(++columnCount);
+                cell.setCellValue("Neve: " + ws.getName());
+                cell = row.createCell(++columnCount);
+                cell.setCellValue("Eff: " + ws.getHatekonysag());
+                cell = row.createCell(++columnCount);
+                cell.setCellValue("Tárazás: " + ws.getTarazasiido());
+                columnCount = 0;
+                row = sheet.createRow(++rowCount);
+                //a hetek kiírása
+                for (int k = 0; k < ws.jTable1.getColumnCount(); k++) {
+
+                    //szedjuk ki a hetet
+                    for (int h = 0; h < ws.getWeekList().size(); h++) {
+                        if (ws.getWeekList().get(h).getWeekname().equals(ws.jTable1.getColumnName(k))) {
+
+                            wk = ws.getWeekList().get(h);
+                            break;
+                        }
+
+                    }
+
+                    //csinálunk egy oszlopot
+                    cell = row.createCell(++columnCount);
+                    cell.setCellStyle(my_style);
+                    try {
+                        cell.setCellValue(Integer.parseInt(ws.jTable1.getColumnName(k)));
+
+                        //a kommentek
+                        //szedjuk ossze a het adatait
+                        //óraszám
+                        String hetadatai = "Óraszám: " + wk.getOraszam() + "\n";
+                        //factorok
+                        for (int h = 0; h < wk.getTenyezoList().size(); h++) {
+
+                            hetadatai += "Tényező: " + wk.getTenyezoList().get(h).getNeve() + " " + wk.getTenyezoList().get(h).getTenyezo() + "\n";
+                        }
+
+                        anchor.setCol1(cell.getColumnIndex());
+                        anchor.setCol2(cell.getColumnIndex() + 4);
+                        anchor.setRow1(row.getRowNum());
+                        anchor.setRow2(row.getRowNum() + wk.getTenyezoList().size() + 1);
+                        // Create the comment and set the text+author
+                        Comment comment = drawing.createCellComment(anchor);
+                        RichTextString str = factory.createRichTextString(hetadatai);
+                        comment.setString(str);
+                        comment.setAuthor("CapCalc");
+
+                    } catch (Exception e) {
+                        try {
+                            cell.setCellValue(ws.jTable1.getColumnName(k));
+
+                        } catch (Exception ex) {
+                        }
+                    }
+
+                }
+                //az adatok kiírása
+                for (int r = 0; r < ws.jTable1.getRowCount(); r++) {
+
+                    //csinálunk egy sort
+                    row = sheet.createRow(++rowCount);
+
+                    columnCount = 0;
+                    for (int c = 0; c < ws.jTable1.getColumnCount(); c++) {
+                        //csinálunk egy oszlopot
+
+                        //szedjuk ki a hetet
+                        for (int h = 0; h < ws.getWeekList().size(); h++) {
+                            if (ws.getWeekList().get(h).getWeekname().equals(ws.jTable1.getColumnName(c))) {
+
+                                wk = ws.getWeekList().get(h);
+                                break;
+                            }
+
+                        }
+
+                        cell = row.createCell(++columnCount);
+
+                        //alkossuk meg a kommentet
+                        String hetadatai = "";
+                        int counter = 0;
+                        for (int h = 0; h < wk.getGyartasok().size(); h++) {
+                            if (wk.getGyartasok().get(h)[0].substring(0, 5).equals(row.getCell(1).getStringCellValue())) {
+                                hetadatai += "PN: " + wk.getGyartasok().get(h)[0] + " Demand: " + wk.getGyartasok().get(h)[1] + " Idő: " + wk.getGyartasok().get(h)[5] + "\n";
+                                counter++;
+                            }
+                        }
+                        if (hetadatai.length() > 0) {
+                            anchor.setCol1(cell.getColumnIndex());
+                            anchor.setCol2(cell.getColumnIndex() + 5);
+                            anchor.setRow1(row.getRowNum());
+                            anchor.setRow2(row.getRowNum() + counter + 1);
+                            // Create the comment and set the text+author
+                            Comment comment = drawing.createCellComment(anchor);
+                            RichTextString str = factory.createRichTextString(hetadatai);
+                            comment.setString(str);
+                            comment.setAuthor("CapCalc");
+                        }
+
+                        //megprobaljuk doubleve convertalni, ha sikerul ugy irjuk ki, ha nem akkor legyen string
+                        try {
+                            cell.setCellValue(Double.parseDouble(ws.jTable1.getValueAt(r, c).toString()));
+                        } catch (Exception e) {
+                            try {
+                                cell.setCellValue((String) ws.jTable1.getValueAt(r, c).toString());
+                            } catch (Exception ex) {
+                            }
+                        }
+
+                    }
+
+                }
+
+            }
+
+        }
+
+        try (FileOutputStream outputStream = new FileOutputStream("JavaBooks.xlsx")) {
+            workbook.write(outputStream);
+        }
+
+    }
 
     public void getKapcsolatDatafromSo() {
         // TODO add your handling code here:
@@ -1082,13 +1269,20 @@ public class MainWindow extends javax.swing.JFrame {
         //bejarjuk a tablat es az adatait betesszuk az so-ba
         for (int i = 0; i < model.getRowCount(); i++) {
             try {
+                double ct = Double.parseDouble(model.getValueAt(i, 4).toString());
+                int qty = Integer.parseInt(model.getValueAt(i, 1).toString());
+                double eff = Double.parseDouble(model.getValueAt(i, 6).toString());
+
                 String[] adatok = new String[7];
                 adatok[0] = model.getValueAt(i, 0).toString();
                 adatok[1] = model.getValueAt(i, 1).toString();
                 adatok[2] = model.getValueAt(i, 2).toString();
                 adatok[3] = model.getValueAt(i, 3).toString();
                 adatok[4] = model.getValueAt(i, 4).toString();
-                adatok[5] = model.getValueAt(i, 5).toString();
+
+                double idoigeny = ((ct * qty) / 60) / 60 / eff;
+                adatok[5] = String.valueOf(new DecimalFormat("#.##").format(idoigeny));
+
                 adatok[6] = model.getValueAt(i, 6).toString();
                 so.getOsszegzes().add(adatok);
             } catch (Exception e) {
@@ -1167,7 +1361,7 @@ public class MainWindow extends javax.swing.JFrame {
 
                                 ct += Double.parseDouble(so.getSmtcycletime().get(c)[8]) / Double.parseDouble(so.getSmtcycletime().get(c)[5]);
                                 eff = Double.parseDouble(so.getSmtcycletime().get(c)[9]) / 100;
-                                
+
                                 continue;
                             }
                         } catch (Exception e) {
@@ -1222,7 +1416,7 @@ public class MainWindow extends javax.swing.JFrame {
                     adatok[3] = defaultws;
                     adatok[4] = new DecimalFormat("#.##").format(ct);
                     double idoigeny = ((ct * qty) / 60) / 60 / eff;
-                    adatok[5] = String.valueOf(idoigeny);
+                    adatok[5] = String.valueOf(new DecimalFormat("#.##").format(idoigeny));
                     adatok[6] = String.valueOf(eff);
 
 //meg kell nezni, hogy eltezik e mar ilyen adat a listben es ha igen akkor csak ossze kell adni az ertekeket es nem uj sort letrehozni
@@ -1315,6 +1509,7 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
+    private javax.swing.JMenu jMenu4;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
@@ -1322,6 +1517,7 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JMenuItem jMenuItem6;
+    private javax.swing.JMenuItem jMenuItem7;
     private javax.swing.JPanel jPanel1;
     public static javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;

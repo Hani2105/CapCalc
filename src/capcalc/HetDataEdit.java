@@ -62,7 +62,7 @@ public class HetDataEdit extends javax.swing.JDialog {
 
                 for (int n = 0; n < w.getWeekList().get(i).getGyartasok().size(); n++) {
                     try {
-                        model.addRow(new Object[]{w.getWeekList().get(i).getGyartasok().get(n)[0], w.getWeekList().get(i).getGyartasok().get(n)[1], w.getWeekList().get(i).getGyartasok().get(n)[2], w.getWeekList().get(i).getGyartasok().get(n)[3], new DecimalFormat("#.##").format(Double.parseDouble(w.getWeekList().get(i).getGyartasok().get(n)[4])), new DecimalFormat("#.##").format(Double.parseDouble(w.getWeekList().get(i).getGyartasok().get(n)[5])),new DecimalFormat("#.##").format(Double.parseDouble(w.getWeekList().get(i).getGyartasok().get(n)[6]))});
+                        model.addRow(new Object[]{w.getWeekList().get(i).getGyartasok().get(n)[0], w.getWeekList().get(i).getGyartasok().get(n)[1], w.getWeekList().get(i).getGyartasok().get(n)[2], w.getWeekList().get(i).getGyartasok().get(n)[3], new DecimalFormat("#.##").format(Double.parseDouble(w.getWeekList().get(i).getGyartasok().get(n)[4])), new DecimalFormat("#.##").format(Double.parseDouble(w.getWeekList().get(i).getGyartasok().get(n)[5]) / w.getHatekonysag() + w.getTarazasiido()),new DecimalFormat("#.##").format(Double.parseDouble(w.getWeekList().get(i).getGyartasok().get(n)[6]))});
                     } catch (Exception e) {
                     }
                 }
@@ -119,7 +119,7 @@ public class HetDataEdit extends javax.swing.JDialog {
 
             },
             new String [] {
-                "PartNumber", "Demand", "StartWeek", "Station", "CT/DB", "Gyártási idő", "Eff"
+                "PartNumber", "Demand", "StartWeek", "Station", "CT/DB", "Gyártási idő (cummulative)", "Eff"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -164,7 +164,7 @@ public class HetDataEdit extends javax.swing.JDialog {
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(284, Short.MAX_VALUE))
+                .addContainerGap(388, Short.MAX_VALUE))
             .addComponent(jScrollPane1)
         );
         jPanel1Layout.setVerticalGroup(
@@ -175,7 +175,7 @@ public class HetDataEdit extends javax.swing.JDialog {
                     .addComponent(jLabel1)
                     .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 237, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 246, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Demand", jPanel1);
@@ -234,7 +234,7 @@ public class HetDataEdit extends javax.swing.JDialog {
                 .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 483, Short.MAX_VALUE)
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 587, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -253,7 +253,7 @@ public class HetDataEdit extends javax.swing.JDialog {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 498, Short.MAX_VALUE)
+            .addComponent(jTabbedPane1)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -327,7 +327,8 @@ public class HetDataEdit extends javax.swing.JDialog {
 
             for (int i = 0; i < model.getRowCount(); i++) {
                 try {
-                    model.setValueAt(new DecimalFormat("#.##").format(Double.parseDouble(model.getValueAt(i, 1).toString()) * Double.parseDouble(model.getValueAt(i, 4).toString()) / 60 / 60 / Double.parseDouble(model.getValueAt(i, 6).toString())), i, 5);
+                    //demand * ciklusido / hatekonysag / ws hatekonysag + tarazas
+                    model.setValueAt(new DecimalFormat("#.##").format(Double.parseDouble(model.getValueAt(i, 1).toString()) * Double.parseDouble(model.getValueAt(i, 4).toString()) / 60 / 60 / Double.parseDouble(model.getValueAt(i, 6).toString()) / w.getHatekonysag() + w.getTarazasiido()), i, 5);
                 } catch (Exception e) {
                 }
 
