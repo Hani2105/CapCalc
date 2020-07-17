@@ -952,16 +952,10 @@ public class MainWindow extends javax.swing.JFrame {
                                 double gyartasiido = 0.00;
                                 try {
                                     //darabszam * ciklusido / pn efficency és ez orásítva
-                                    gyartasiido = Double.parseDouble(wk.getGyartasok().get(h)[1]) * Double.parseDouble(wk.getGyartasok().get(h)[4]) / 60 / 60 / Double.parseDouble(wk.getGyartasok().get(h)[6]);
+                                    gyartasiido = wk.calcGyartasiido(Double.parseDouble(wk.getGyartasok().get(h)[1]), Double.parseDouble(wk.getGyartasok().get(h)[4]), Double.parseDouble(wk.getGyartasok().get(h)[6]));
+                                   
                                 } catch (Exception ex) {
                                 }
-                                for (int z = 0; z < wk.getTenyezoList().size(); z++) {
-
-                                    gyartasiido = gyartasiido / wk.getTenyezoList().get(z).getTenyezo();
-                                }
-
-                                gyartasiido = gyartasiido / ws.getHatekonysag();
-                                gyartasiido += ws.getTarazasiido();
 
                                 hetadatai += "PN: " + wk.getGyartasok().get(h)[0] + " Demand: " + wk.getGyartasok().get(h)[1] + " Idő: " + new DecimalFormat("#.##").format(gyartasiido) + "\n";
                                 counter++;

@@ -66,18 +66,7 @@ public class HetDataEdit extends javax.swing.JDialog {
                     try {
 
                         double gyartas = 0.00;
-                        gyartas = Double.parseDouble(w.getWeekList().get(i).getGyartasok().get(n)[1].toString()) *  Double.parseDouble(w.getWeekList().get(i).getGyartasok().get(n)[4].toString()) /60/60 / Double.parseDouble(w.getWeekList().get(i).getGyartasok().get(n)[6].toString());
-                        for (int z = 0; z < w.getWeekList().get(i).getTenyezoList().size(); z++) {
-                            try {
-                                gyartas = gyartas / w.getWeekList().get(i).getTenyezoList().get(z).getTenyezo();
-                            } catch (Exception e) {
-                            }
-
-                        }
-
-                        gyartas = gyartas / w.getHatekonysag();
-                        gyartas += w.getTarazasiido();
-
+                        gyartas = w.getWeekList().get(i).calcGyartasiido(Double.parseDouble(w.getWeekList().get(i).getGyartasok().get(n)[1].toString()), Double.parseDouble(w.getWeekList().get(i).getGyartasok().get(n)[4].toString()), Double.parseDouble(w.getWeekList().get(i).getGyartasok().get(n)[6].toString()));
                         model.addRow(new Object[]{w.getWeekList().get(i).getGyartasok().get(n)[0], w.getWeekList().get(i).getGyartasok().get(n)[1], w.getWeekList().get(i).getGyartasok().get(n)[2], w.getWeekList().get(i).getGyartasok().get(n)[3], new DecimalFormat("#.##").format(Double.parseDouble(w.getWeekList().get(i).getGyartasok().get(n)[4])), new DecimalFormat("#.##").format(gyartas), new DecimalFormat("#.##").format(Double.parseDouble(w.getWeekList().get(i).getGyartasok().get(n)[6]))});
                     } catch (Exception e) {
                     }
@@ -345,17 +334,7 @@ public class HetDataEdit extends javax.swing.JDialog {
                 double gyartas = 0.00;
                 try {
 
-                    gyartas = Double.parseDouble(model.getValueAt(i, 1).toString()) * Double.parseDouble(model.getValueAt(i, 4).toString()) / 60 / 60 / Double.parseDouble(model.getValueAt(i, 6).toString());
-                    //figyelembe vesszuk a tenyezoket is
-                    for (int t = 0; t < wk.getTenyezoList().size(); t++) {
-
-                        gyartas = gyartas / wk.getTenyezoList().get(t).getTenyezo();
-                    }
-                    
-                    //ws hatékonyság
-                    gyartas = gyartas / w.getHatekonysag();
-                    //tarzasai idő
-                    gyartas += w.getTarazasiido();
+                    gyartas = wk.calcGyartasiido(Double.parseDouble(model.getValueAt(i, 1).toString()), Double.parseDouble(model.getValueAt(i, 4).toString()), Double.parseDouble(model.getValueAt(i, 6).toString()));
                     model.setValueAt(new DecimalFormat("#.##").format(gyartas), i, 5);
 
                 } catch (Exception e) {

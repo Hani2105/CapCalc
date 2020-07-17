@@ -143,28 +143,17 @@ public class Week {
                         if (model.getColumnName(c).equals(getWeekname())) {
                             //ki kell számolni az uj adatot
                             double ujadat = 0.00;
-                            try {
-                                //darabszam * ciklusido / pn efficency és ez orásítva
-                                ujadat = Double.parseDouble(getGyartasok().get(i)[1]) * Double.parseDouble(getGyartasok().get(i)[4]) / 60 / 60 / Double.parseDouble(getGyartasok().get(i)[6]) ;
-                                for (int f = 0; f < getTenyezoList().size(); f++) {
-
-                                    ujadat = ujadat / getTenyezoList().get(f).getTenyezo();
-
-                                }
-                                //a ws hatekonysagat is figyelembe vesszuk
-                                ujadat = ujadat / ws.getHatekonysag();
-                                //a tarazasi időt is figyelembe kell venni
-                                ujadat += ws.getTarazasiido();
-                            } catch (Exception e) {
-                            }
 
                             //be kell allitani az addatokat a cellaba
                             try {
 
-                                gyartasido += Double.parseDouble(model.getValueAt(r, c).toString()) + ujadat;
+                                gyartasido += Double.parseDouble(model.getValueAt(r, c).toString()) + calcGyartasiido(Double.parseDouble(getGyartasok().get(i)[1]), Double.parseDouble(getGyartasok().get(i)[4]), Double.parseDouble(getGyartasok().get(i)[6]));
 
                             } catch (Exception e) {
-                                gyartasido = ujadat;
+                                try {
+                                    gyartasido = calcGyartasiido(Double.parseDouble(getGyartasok().get(i)[1]), Double.parseDouble(getGyartasok().get(i)[4]), Double.parseDouble(getGyartasok().get(i)[6]));
+                                } catch (Exception ex) {
+                                }
                             }
 
                             model.setValueAt(new DecimalFormat("#.##").format(gyartasido), r, c);
@@ -185,27 +174,14 @@ public class Week {
             for (int c = 1; c < model.getColumnCount(); c++) {
 
                 if (model.getColumnName(c).equals(getWeekname())) {
-                    //be kell allitani az addatokat a cellaba
-                    //ki kell számolni az uj adatot
-                    double ujadat = 0.00;
+
                     try {
-                        //darabszam * ciklusido / pn efficency és ez orásítva
-                        ujadat = Double.parseDouble(getGyartasok().get(i)[1]) * Double.parseDouble(getGyartasok().get(i)[4]) / 60 / 60 / Double.parseDouble(getGyartasok().get(i)[6]);
-                        for (int f = 0; f < getTenyezoList().size(); f++) {
-
-                            ujadat = ujadat / getTenyezoList().get(f).getTenyezo();
-
+                        gyartasido += Double.parseDouble(model.getValueAt(model.getRowCount() - 1, c).toString()) + calcGyartasiido(Double.parseDouble(getGyartasok().get(i)[1]), Double.parseDouble(getGyartasok().get(i)[4]), Double.parseDouble(getGyartasok().get(i)[6]));
+                    } catch (Exception e) {
+                        try {
+                            gyartasido = calcGyartasiido(Double.parseDouble(getGyartasok().get(i)[1]), Double.parseDouble(getGyartasok().get(i)[4]), Double.parseDouble(getGyartasok().get(i)[6]));
+                        } catch (Exception ex) {
                         }
-                        //figyelembe kell venni az állomáshatékonyságát is
-                        ujadat = ujadat / ws.getHatekonysag();
-                        //a tarazasi időt is figyelembe kell venni
-                        ujadat += ws.getTarazasiido();
-                    } catch (Exception e) {
-                    }
-                    try {
-                        gyartasido += Double.parseDouble(model.getValueAt(model.getRowCount() - 1, c).toString()) + ujadat;
-                    } catch (Exception e) {
-                        gyartasido = ujadat;
                     }
 
                     model.setValueAt(new DecimalFormat("#.##").format(gyartasido), model.getRowCount() - 1, c);
@@ -240,10 +216,25 @@ public class Week {
         ws.jTable1.setModel(model);
         new TableWidth(ws.jTable1);
     }
-    
-    
-    
-    
-    
+
+    public double calcGyartasiido(double demand, double ct, double eff) {
+
+        double gyi = 0.00;
+        //demand * ciklusido órásítva és a pn hatékonysággal számolva
+        try {
+            gyi = demand * ct / 60 / 60 / eff;
+        } catch (Exception e) {
+        }
+        //vegyük figyelembe a heti paramétereket is ha van
+        for (int i = 0; i < this.getTenyezoList().size(); i++) {
+
+            gyi = gyi / this.getTenyezoList().get(i).getTenyezo();
+        }
+
+        gyi = gyi / ws.getHatekonysag();
+        gyi += ws.getTarazasiido();
+
+        return gyi;
+    }
 
 }
