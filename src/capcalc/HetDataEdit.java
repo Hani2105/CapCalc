@@ -20,6 +20,7 @@ public class HetDataEdit extends javax.swing.JDialog {
      * Creates new form HetDataEdit
      */
     WorkStation w;
+    Week wk;
 
     public HetDataEdit(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
@@ -40,6 +41,7 @@ public class HetDataEdit extends javax.swing.JDialog {
 
             if (w.getWeekList().get(i).getWeekname().equals(w.jTable1.getColumnName(w.jTable1.getSelectedColumn()))) {
                 jTextField2.setText(String.valueOf(w.getWeekList().get(i).getOraszam()));
+                this.wk = w.getWeekList().get(i);
             }
 
         }
@@ -62,7 +64,21 @@ public class HetDataEdit extends javax.swing.JDialog {
 
                 for (int n = 0; n < w.getWeekList().get(i).getGyartasok().size(); n++) {
                     try {
-                        model.addRow(new Object[]{w.getWeekList().get(i).getGyartasok().get(n)[0], w.getWeekList().get(i).getGyartasok().get(n)[1], w.getWeekList().get(i).getGyartasok().get(n)[2], w.getWeekList().get(i).getGyartasok().get(n)[3], new DecimalFormat("#.##").format(Double.parseDouble(w.getWeekList().get(i).getGyartasok().get(n)[4])), new DecimalFormat("#.##").format(Double.parseDouble(w.getWeekList().get(i).getGyartasok().get(n)[5]) / w.getHatekonysag() + w.getTarazasiido()),new DecimalFormat("#.##").format(Double.parseDouble(w.getWeekList().get(i).getGyartasok().get(n)[6]))});
+
+                        double gyartas = 0.00;
+                        gyartas = Double.parseDouble(w.getWeekList().get(i).getGyartasok().get(n)[1].toString()) *  Double.parseDouble(w.getWeekList().get(i).getGyartasok().get(n)[4].toString()) /60/60 / Double.parseDouble(w.getWeekList().get(i).getGyartasok().get(n)[6].toString());
+                        for (int z = 0; z < w.getWeekList().get(i).getTenyezoList().size(); z++) {
+                            try {
+                                gyartas = gyartas / w.getWeekList().get(i).getTenyezoList().get(z).getTenyezo();
+                            } catch (Exception e) {
+                            }
+
+                        }
+
+                        gyartas = gyartas / w.getHatekonysag();
+                        gyartas += w.getTarazasiido();
+
+                        model.addRow(new Object[]{w.getWeekList().get(i).getGyartasok().get(n)[0], w.getWeekList().get(i).getGyartasok().get(n)[1], w.getWeekList().get(i).getGyartasok().get(n)[2], w.getWeekList().get(i).getGyartasok().get(n)[3], new DecimalFormat("#.##").format(Double.parseDouble(w.getWeekList().get(i).getGyartasok().get(n)[4])), new DecimalFormat("#.##").format(gyartas), new DecimalFormat("#.##").format(Double.parseDouble(w.getWeekList().get(i).getGyartasok().get(n)[6]))});
                     } catch (Exception e) {
                     }
                 }
@@ -326,9 +342,22 @@ public class HetDataEdit extends javax.swing.JDialog {
             model = (DefaultTableModel) jTable1.getModel();
 
             for (int i = 0; i < model.getRowCount(); i++) {
+                double gyartas = 0.00;
                 try {
-                    //demand * ciklusido / hatekonysag / ws hatekonysag + tarazas
-                    model.setValueAt(new DecimalFormat("#.##").format(Double.parseDouble(model.getValueAt(i, 1).toString()) * Double.parseDouble(model.getValueAt(i, 4).toString()) / 60 / 60 / Double.parseDouble(model.getValueAt(i, 6).toString()) / w.getHatekonysag() + w.getTarazasiido()), i, 5);
+
+                    gyartas = Double.parseDouble(model.getValueAt(i, 1).toString()) * Double.parseDouble(model.getValueAt(i, 4).toString()) / 60 / 60 / Double.parseDouble(model.getValueAt(i, 6).toString());
+                    //figyelembe vesszuk a tenyezoket is
+                    for (int t = 0; t < wk.getTenyezoList().size(); t++) {
+
+                        gyartas = gyartas / wk.getTenyezoList().get(t).getTenyezo();
+                    }
+                    
+                    //ws hatékonyság
+                    gyartas = gyartas / w.getHatekonysag();
+                    //tarzasai idő
+                    gyartas += w.getTarazasiido();
+                    model.setValueAt(new DecimalFormat("#.##").format(gyartas), i, 5);
+
                 } catch (Exception e) {
                 }
 

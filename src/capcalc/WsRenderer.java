@@ -101,13 +101,23 @@ public class WsRenderer extends DefaultTableCellRenderer {
 //bepörgetjük az adatait és ha egyezik a prefix a sor elejen szereplovel hozzaadjuk a tooltip texthez
                     for (int n = 0; n < ws.getWeekList().get(i).getGyartasok().size(); n++) {
                         if (ws.getWeekList().get(i).getGyartasok().get(n)[0].substring(0, 5).equals(table.getValueAt(row, 0).toString())) {
-                            String gyartas = "";
+                            double gyartas = 0.00;
                             try {
-                                gyartas = new DecimalFormat("#.##").format(Double.parseDouble(ws.getWeekList().get(i).getGyartasok().get(n)[5]));
+
+                                gyartas = Double.parseDouble(ws.getWeekList().get(i).getGyartasok().get(n)[1]) * Double.parseDouble(ws.getWeekList().get(i).getGyartasok().get(n)[4]) /60/60 / Double.parseDouble(ws.getWeekList().get(i).getGyartasok().get(n)[6]);
+                                for (int z = 0; z < ws.getWeekList().get(i).getTenyezoList().size(); z++) {
+
+                                    gyartas = gyartas / ws.getWeekList().get(i).getTenyezoList().get(z).getTenyezo();
+
+                                }
+
+                                gyartas = gyartas / ws.getHatekonysag();
+                                gyartas += ws.getTarazasiido();
+
                             } catch (Exception e) {
 
                             }
-                            tooltiptext += "<span style=\"color:red;\">PN: </span>" + ws.getWeekList().get(i).getGyartasok().get(n)[0] + " <span style=\"color:red;\">Demand: </span>" + ws.getWeekList().get(i).getGyartasok().get(n)[1] + " <span style=\"color:red;\">CT: </span>" + ws.getWeekList().get(i).getGyartasok().get(n)[4] + " <span style=\"color:red;\">Gyártási idő: </span>" + gyartas + "<br>";
+                            tooltiptext += "<span style=\"color:red;\">PN: </span>" + ws.getWeekList().get(i).getGyartasok().get(n)[0] + " <span style=\"color:red;\">Demand: </span>" + ws.getWeekList().get(i).getGyartasok().get(n)[1] + " <span style=\"color:red;\">CT: </span>" + ws.getWeekList().get(i).getGyartasok().get(n)[4] + " <span style=\"color:red;\">Gyártási idő: </span>" + new DecimalFormat("#.##").format(gyartas) + "<br>";
 
                         }
                     }
@@ -119,9 +129,6 @@ public class WsRenderer extends DefaultTableCellRenderer {
             c.setToolTipText(tooltiptext);
 
         }
-        
-
-        
 
         return c;
 

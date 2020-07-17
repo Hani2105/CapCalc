@@ -5,6 +5,7 @@
  */
 package capcalc;
 
+import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -33,6 +34,7 @@ import org.apache.poi.xssf.usermodel.XSSFFont;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
@@ -62,6 +64,7 @@ public class MainWindow extends javax.swing.JFrame {
 
     public MainWindow() throws IOException {
         initComponents();
+        setIcon();
         //teljes képernyőre tesszük
         //az smt adatok tábla excel szerkesztes
         new ExcelAdapter(jTable1);
@@ -96,6 +99,12 @@ public class MainWindow extends javax.swing.JFrame {
 
     public static void setWomagassag(int womagassag) {
         MainWindow.womagassag = womagassag;
+    }
+
+    public void setIcon() {
+
+        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/pictures/calc.png")));
+
     }
 
     /**
@@ -411,7 +420,7 @@ public class MainWindow extends javax.swing.JFrame {
                 {null, null, null, null, null, null, null}
             },
             new String [] {
-                "PartNumber", "Demand", "Start Week", "Station", "CT/DB", "Gyártási idő", "Efficiency"
+                "PartNumber", "Demand", "Start Week", "Station", "CT/DB", "Gyártási idő (+eff)", "Efficiency"
             }
         ));
         jTable5.setCellSelectionEnabled(true);
@@ -827,12 +836,7 @@ public class MainWindow extends javax.swing.JFrame {
         XSSFSheet sheet = workbook.createSheet("Állomások");
         workbook.createSheet("Összegzés");
         //cella stílus
-        CellStyle my_style = workbook.createCellStyle();
-        XSSFFont my_font = workbook.createFont();
-        my_font.setBold(true);
-        my_style.setFont(my_font);
-        my_style.setFillForegroundColor(IndexedColors.GREEN.getIndex());
-        my_style.setFillPattern(FillPatternType.SOLID_FOREGROUND); 
+
         //a kommenthez kell
         CreationHelper factory = workbook.getCreationHelper();
         Drawing drawing = sheet.createDrawingPatriarch();
@@ -876,7 +880,16 @@ public class MainWindow extends javax.swing.JFrame {
 
                     //csinálunk egy oszlopot
                     cell = row.createCell(++columnCount);
-                    cell.setCellStyle(my_style);
+                    if (row.getCell(1).getStringCellValue().equals("Prefix")) {
+                        CellStyle my_style = workbook.createCellStyle();
+                        XSSFFont my_font = workbook.createFont();
+                        my_font.setBold(true);
+                        my_style.setFont(my_font);
+                        my_style.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.getIndex());
+                        my_style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+
+                        cell.setCellStyle(my_style);
+                    }
                     try {
                         cell.setCellValue(Integer.parseInt(ws.jTable1.getColumnName(k)));
 
@@ -930,13 +943,27 @@ public class MainWindow extends javax.swing.JFrame {
                         }
 
                         cell = row.createCell(++columnCount);
-
                         //alkossuk meg a kommentet
                         String hetadatai = "";
                         int counter = 0;
                         for (int h = 0; h < wk.getGyartasok().size(); h++) {
                             if (wk.getGyartasok().get(h)[0].substring(0, 5).equals(row.getCell(1).getStringCellValue())) {
-                                hetadatai += "PN: " + wk.getGyartasok().get(h)[0] + " Demand: " + wk.getGyartasok().get(h)[1] + " Idő: " + wk.getGyartasok().get(h)[5] + "\n";
+                                //szamoljuk ki az időt
+                                double gyartasiido = 0.00;
+                                try {
+                                    //darabszam * ciklusido / pn efficency és ez orásítva
+                                    gyartasiido = Double.parseDouble(wk.getGyartasok().get(h)[1]) * Double.parseDouble(wk.getGyartasok().get(h)[4]) / 60 / 60 / Double.parseDouble(wk.getGyartasok().get(h)[6]);
+                                } catch (Exception ex) {
+                                }
+                                for (int z = 0; z < wk.getTenyezoList().size(); z++) {
+
+                                    gyartasiido = gyartasiido / wk.getTenyezoList().get(z).getTenyezo();
+                                }
+
+                                gyartasiido = gyartasiido / ws.getHatekonysag();
+                                gyartasiido += ws.getTarazasiido();
+
+                                hetadatai += "PN: " + wk.getGyartasok().get(h)[0] + " Demand: " + wk.getGyartasok().get(h)[1] + " Idő: " + new DecimalFormat("#.##").format(gyartasiido) + "\n";
                                 counter++;
                             }
                         }
@@ -955,6 +982,24 @@ public class MainWindow extends javax.swing.JFrame {
                         //megprobaljuk doubleve convertalni, ha sikerul ugy irjuk ki, ha nem akkor legyen string
                         try {
                             cell.setCellValue(Double.parseDouble(ws.jTable1.getValueAt(r, c).toString()));
+
+//ha 80% legyen narancs
+                            if (cell.getNumericCellValue() > wk.getOraszam() * 0.8 && row.getCell(1).getStringCellValue().equals("SUM:")) {
+
+                                CellStyle style = workbook.createCellStyle();
+                                style.setFillForegroundColor(IndexedColors.YELLOW.getIndex());
+                                style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+                                cell.setCellStyle(style);
+                            }
+//ha cell erteke nagyobb mint het oraszama akkor legyen piros
+                            if (cell.getNumericCellValue() > wk.getOraszam() && row.getCell(1).getStringCellValue().equals("SUM:")) {
+                                CellStyle style = workbook.createCellStyle();
+                                style.setFillForegroundColor(IndexedColors.RED.getIndex());
+                                style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+                                cell.setCellStyle(style);
+
+                            }
+
                         } catch (Exception e) {
                             try {
                                 cell.setCellValue((String) ws.jTable1.getValueAt(r, c).toString());
@@ -970,10 +1015,20 @@ public class MainWindow extends javax.swing.JFrame {
 
         }
 
-        try (FileOutputStream outputStream = new FileOutputStream("JavaBooks.xlsx")) {
-            workbook.write(outputStream);
-        }
+       
 
+        JFileChooser chooser = new JFileChooser();
+        chooser.setCurrentDirectory(new File(System.getProperty("user.home")));
+        int retrival = chooser.showSaveDialog(null);
+        if (retrival == JFileChooser.APPROVE_OPTION) {
+            try (FileOutputStream outputStream = new FileOutputStream(chooser.getSelectedFile() + ".xlsx")) {
+                workbook.write(outputStream);
+                workbook.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        }
     }
 
     public void getKapcsolatDatafromSo() {
@@ -1312,7 +1367,7 @@ public class MainWindow extends javax.swing.JFrame {
 //kiszedjuk a gyartando darabszamot
             int qty = 0;
             try {
-                qty = Integer.parseInt(so.getDemandList().get(d)[13].replace(",", ""));
+                qty = Integer.parseInt(so.getDemandList().get(d)[13].replaceAll("[^0-9]", ""));
             } catch (Exception e) {
             }
 //be kell jarni a kapcsolatok tablat es meg kell keresni, hogy letezik e ehhez a pn hez hozzaadott sor vagy cella
