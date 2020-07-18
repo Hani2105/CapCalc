@@ -43,6 +43,8 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.FillPatternType;
+import org.apache.poi.ss.usermodel.HorizontalAlignment;
+import org.apache.poi.ss.usermodel.VerticalAlignment;
 
 /**
  *
@@ -887,10 +889,11 @@ public class MainWindow extends javax.swing.JFrame {
                         my_style.setFont(my_font);
                         my_style.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.getIndex());
                         my_style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-
+                        my_style.setAlignment(HorizontalAlignment.CENTER);
                         cell.setCellStyle(my_style);
                     }
                     try {
+                        
                         cell.setCellValue(Integer.parseInt(ws.jTable1.getColumnName(k)));
 
                         //a kommentek
@@ -915,6 +918,7 @@ public class MainWindow extends javax.swing.JFrame {
 
                     } catch (Exception e) {
                         try {
+                            
                             cell.setCellValue(ws.jTable1.getColumnName(k));
 
                         } catch (Exception ex) {
@@ -922,6 +926,10 @@ public class MainWindow extends javax.swing.JFrame {
                     }
 
                 }
+                
+                CellStyle simastyle = workbook.createCellStyle();
+                simastyle.setAlignment(HorizontalAlignment.CENTER);
+                
                 //az adatok kiírása
                 for (int r = 0; r < ws.jTable1.getRowCount(); r++) {
 
@@ -943,6 +951,7 @@ public class MainWindow extends javax.swing.JFrame {
                         }
 
                         cell = row.createCell(++columnCount);
+                        cell.setCellStyle(simastyle);
                         //alkossuk meg a kommentet
                         String hetadatai = "";
                         int counter = 0;
@@ -953,7 +962,7 @@ public class MainWindow extends javax.swing.JFrame {
                                 try {
                                     //darabszam * ciklusido / pn efficency és ez orásítva
                                     gyartasiido = wk.calcGyartasiido(Double.parseDouble(wk.getGyartasok().get(h)[1]), Double.parseDouble(wk.getGyartasok().get(h)[4]), Double.parseDouble(wk.getGyartasok().get(h)[6]));
-                                   
+
                                 } catch (Exception ex) {
                                 }
 
@@ -975,28 +984,50 @@ public class MainWindow extends javax.swing.JFrame {
 
                         //megprobaljuk doubleve convertalni, ha sikerul ugy irjuk ki, ha nem akkor legyen string
                         try {
+                           
                             cell.setCellValue(Double.parseDouble(ws.jTable1.getValueAt(r, c).toString()));
 
 //ha 80% legyen narancs
-                            if (cell.getNumericCellValue() > wk.getOraszam() * 0.8 && row.getCell(1).getStringCellValue().equals("SUM:")) {
+                            if (wk.getGyartasiora() > wk.getOraszam() * 0.8 && row.getCell(1).getStringCellValue().equals("SUM:")) {
 
                                 CellStyle style = workbook.createCellStyle();
                                 style.setFillForegroundColor(IndexedColors.YELLOW.getIndex());
                                 style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+                                style.setAlignment(HorizontalAlignment.CENTER);
                                 cell.setCellStyle(style);
                             }
 //ha cell erteke nagyobb mint het oraszama akkor legyen piros
-                            if (cell.getNumericCellValue() > wk.getOraszam() && row.getCell(1).getStringCellValue().equals("SUM:")) {
+                            if (wk.getGyartasiora() > wk.getOraszam() && row.getCell(1).getStringCellValue().equals("SUM:")) {
                                 CellStyle style = workbook.createCellStyle();
                                 style.setFillForegroundColor(IndexedColors.RED.getIndex());
                                 style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+                                style.setAlignment(HorizontalAlignment.CENTER);
                                 cell.setCellStyle(style);
 
                             }
 
                         } catch (Exception e) {
                             try {
+                                cell.getCellStyle().setAlignment(HorizontalAlignment.CENTER);
                                 cell.setCellValue((String) ws.jTable1.getValueAt(r, c).toString());
+                                //ha 80% legyen narancs
+                                if (wk.getGyartasiora() > wk.getOraszam() * 0.8 && row.getCell(1).getStringCellValue().equals("SUM:")) {
+
+                                    CellStyle style = workbook.createCellStyle();
+                                    style.setFillForegroundColor(IndexedColors.YELLOW.getIndex());
+                                    style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+                                    style.setAlignment(HorizontalAlignment.CENTER);
+                                    cell.setCellStyle(style);
+                                }
+//ha cell erteke nagyobb mint het oraszama akkor legyen piros
+                                if (wk.getGyartasiora() > wk.getOraszam() && row.getCell(1).getStringCellValue().equals("SUM:")) {
+                                    CellStyle style = workbook.createCellStyle();
+                                    style.setFillForegroundColor(IndexedColors.RED.getIndex());
+                                    style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+                                    style.setAlignment(HorizontalAlignment.CENTER);
+                                    cell.setCellStyle(style);
+
+                                }
                             } catch (Exception ex) {
                             }
                         }
@@ -1007,22 +1038,20 @@ public class MainWindow extends javax.swing.JFrame {
 
             }
 
-        }
+            JFileChooser chooser = new JFileChooser();
+            chooser.setCurrentDirectory(new File(System.getProperty("user.home")));
+            int retrival = chooser.showSaveDialog(null);
+            if (retrival == JFileChooser.APPROVE_OPTION) {
+                try (FileOutputStream outputStream = new FileOutputStream(chooser.getSelectedFile() + ".xlsx")) {
+                    workbook.write(outputStream);
+                    workbook.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
 
-       
-
-        JFileChooser chooser = new JFileChooser();
-        chooser.setCurrentDirectory(new File(System.getProperty("user.home")));
-        int retrival = chooser.showSaveDialog(null);
-        if (retrival == JFileChooser.APPROVE_OPTION) {
-            try (FileOutputStream outputStream = new FileOutputStream(chooser.getSelectedFile() + ".xlsx")) {
-                workbook.write(outputStream);
-                workbook.close();
-            } catch (Exception e) {
-                e.printStackTrace();
             }
-
         }
+
     }
 
     public void getKapcsolatDatafromSo() {

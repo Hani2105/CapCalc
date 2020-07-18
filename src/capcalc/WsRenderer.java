@@ -56,11 +56,11 @@ public class WsRenderer extends DefaultTableCellRenderer {
                     try {
 
                         //ha 80 % legyen narancs
-                        if (ws.getWeekList().get(i).getOraszam() < Double.parseDouble(table.getValueAt(row, column).toString())) {
+                        if (ws.getWeekList().get(i).getOraszam() < ws.getWeekList().get(i).getGyartasiora()) {
 
                             c.setForeground(Color.red);
 
-                        } else if (ws.getWeekList().get(i).getOraszam() * 0.8 < Double.parseDouble(table.getValueAt(row, column).toString())) {
+                        } else if (ws.getWeekList().get(i).getOraszam() * 0.8 < ws.getWeekList().get(i).getGyartasiora()) {
 
                             c.setForeground(Color.orange);
 
@@ -70,6 +70,7 @@ public class WsRenderer extends DefaultTableCellRenderer {
 
                         }
                     } catch (Exception e) {
+                      
                     }
 
                 }
@@ -129,7 +130,7 @@ public class WsRenderer extends DefaultTableCellRenderer {
             c.setToolTipText(tooltiptext);
 
         }
-
+        c.setHorizontalAlignment(JLabel.CENTER);
         return c;
 
     }

@@ -22,6 +22,7 @@ public class Week {
     private WorkStation ws = null;
     private double oraszam = 168.0;
     private ArrayList<Factor> tenyezolist = new ArrayList<>();
+    private double gyartasiora = 0.00;
 
     public Week(String wsname, String weekname, WorkStation ws) {
 
@@ -35,6 +36,16 @@ public class Week {
 
     }
 
+    public double getGyartasiora() {
+        return gyartasiora;
+    }
+
+    public void setGyartasiora(double gyartasiora) {
+        this.gyartasiora = gyartasiora;
+    }
+
+    
+    
     public ArrayList<Factor> getTenyezoList() {
         return tenyezolist;
     }
@@ -193,7 +204,7 @@ public class Week {
 
         }
 
-        //ki kell szamolni a summat es beírni a legfelső sorba
+        //ki kell szamolni a summat es beírni a legfelső sorba--------------------------------------------->
         for (int c = 1; c < model.getColumnCount(); c++) {
 
             if (model.getColumnName(c).equals(getWeekname())) {
@@ -203,10 +214,18 @@ public class Week {
                 for (int r = 1; r < model.getRowCount(); r++) {
                     try {
                         osszeg += Double.parseDouble(model.getValueAt(r, c).toString());
+                       
                     } catch (Exception e) {
                     }
                 }
-                model.setValueAt(new DecimalFormat("#.##").format(osszeg), 0, c);
+                //számoljuk ki százalékban is
+                //kiszámoljuk az 1 százalékát a hét óraszámának
+                double szazalek = 0.00;
+                szazalek = this.getOraszam() / 100;
+                //megnezzuk, hogy ez hanyszor van meg az összegben
+                szazalek = osszeg / szazalek;
+                setGyartasiora(osszeg);
+                model.setValueAt(new DecimalFormat("#.##").format(osszeg) +" | " + new DecimalFormat("#.##").format(szazalek)+ "%", 0, c);
                 break;
 
             }

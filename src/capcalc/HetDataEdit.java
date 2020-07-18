@@ -399,11 +399,11 @@ public class HetDataEdit extends javax.swing.JDialog {
                     }
 
                 }
-                //lefuttatjuk a sajatadattotablet
-                w.getWeekList().get(i).setSajatAdatToTable();
+
                 //beallitjuk a het oraszamat is
                 w.getWeekList().get(i).setOraszam(Double.parseDouble(jTextField2.getText()));
-
+                //lefuttatjuk a sajatadattotablet
+                w.getWeekList().get(i).setSajatAdatToTable();
             }
 
         }

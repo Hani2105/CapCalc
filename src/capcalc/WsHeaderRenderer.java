@@ -46,6 +46,7 @@ public class WsHeaderRenderer extends DefaultTableCellRenderer {
         }
         c.setFont(new Font(Font.DIALOG, Font.BOLD, 11));
         c.setToolTipText(tooltiptext);
+        c.setHorizontalAlignment(JLabel.CENTER);
         return c;
 
     }
