@@ -7,6 +7,7 @@ package capcalc;
 
 import java.awt.Component;
 import java.awt.Font;
+import java.text.DecimalFormat;
 import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -34,13 +35,18 @@ public class WsHeaderRenderer extends DefaultTableCellRenderer {
 
             //ha megegyezik a hét neve a column nevével akkor beállítjuk tooltipnek a faktorokat és a hét óráját
             if (w.getWeekList().get(i).getWeekname().equals(table.getColumnName(column))) {
-                tooltiptext += "<span style=\"color:orange;\">Hét óraszáma: </span>" + w.getWeekList().get(i).getOraszam() + "<br>";
+                tooltiptext += "<span style=\"color:orange;\">A héten elérhető órák száma: </span>" + w.getWeekList().get(i).getOraszam() + " óra<br>";
                 for (int n = 0; n < w.getWeekList().get(i).getTenyezoList().size(); n++) {
 
-                    tooltiptext += "<span style=\"color:orange;\">Neve: </span>" + w.getWeekList().get(i).getTenyezoList().get(n).getNeve() + "<span style=\"color:red;\"> Leírása: </span>" + w.getWeekList().get(i).getTenyezoList().get(n).getLeiras() + "<span style=\"color:red;\"> Hatékonyság: </span>" + w.getWeekList().get(i).getTenyezoList().get(n).getTenyezo() + "<br>";
+                    tooltiptext += "<span style=\"color:orange;\">Neve: </span>" + w.getWeekList().get(i).getTenyezoList().get(n).getNeve() + "<span style=\"color:orange;\"> Leírása: </span>" + w.getWeekList().get(i).getTenyezoList().get(n).getLeiras() + "<span style=\"color:orange;\"> Hatékonyság: </span>" + w.getWeekList().get(i).getTenyezoList().get(n).getTenyezo() + "%<br>";
 
                 }
-               
+                //a tárazási idő hozzáadása
+                tooltiptext += "<span style=\"color:orange;\">Tárazási idő: </span>" + new DecimalFormat("#.##").format(w.getWeekList().get(i).calcTarazasiido()) + " óra<br>";
+                //a mernoki ido hozzaadasa
+                tooltiptext += "<span style=\"color:orange;\">Mérnöki idő: </span>" + new DecimalFormat("#.##").format(w.getWeekList().get(i).getMernokiido()) + " óra<br>";
+                //a gyártási idő kiírása
+                tooltiptext += "<span style=\"color:orange;\">Gyártási idő: </span>" + new DecimalFormat("#.##").format(w.getWeekList().get(i).getSumgyartasiido()) + " óra<br>";
             }
 
         }

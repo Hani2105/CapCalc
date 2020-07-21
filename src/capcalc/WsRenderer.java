@@ -17,7 +17,7 @@ import javax.swing.table.DefaultTableCellRenderer;
  *
  * @author gabor_hanacsek
  */
-public class WsRenderer extends DefaultTableCellRenderer {
+public class WsRenderer extends DefaultTableCellRenderer{
 
     WorkStation ws;
 
@@ -26,11 +26,6 @@ public class WsRenderer extends DefaultTableCellRenderer {
         this.ws = ws;
     }
 
-//    public SimpleHeaderRenderer() {
-//        setFont(new Font("Consolas", Font.BOLD, 14));
-//        setForeground(Color.BLUE);
-//        setBorder(BorderFactory.createEtchedBorder());
-//    }
     public Component getTableCellRendererComponent(JTable table, Object value,
             boolean isSelected, boolean hasFocus, int row, int column) {
 
@@ -70,7 +65,7 @@ public class WsRenderer extends DefaultTableCellRenderer {
 
                         }
                     } catch (Exception e) {
-                      
+
                     }
 
                 }
@@ -80,40 +75,37 @@ public class WsRenderer extends DefaultTableCellRenderer {
         }
         //a tooltiptext beallítasa
 
-        if (row > 0 && column > 0 && table.getValueAt(row, column) != null) {
+        if (row >= 0 && column > 0 && table.getValueAt(row, column) != null) {
             String tooltiptext = "<html>";
             //ki kell talalni, hogy az adott cella adata miből áll össze
             //ki kell találni a hetet
             for (int i = 0; i < ws.getWeekList().size(); i++) {
 //ha a hét száma egyezik a column nevével továbbmegyünk
                 if (ws.getWeekList().get(i).getWeekname().equals(table.getColumnName(column))) {
+                    
                     //a hét adatait listázzuk ki
                     //a hét óraszáma  
-                    tooltiptext += "<span style=\"color:orange;\">A hét óraszáma: </span> " + ws.getWeekList().get(i).getOraszam() + "<br>";
+                    tooltiptext += "<span style=\"color:orange;\">A héten elérhető órák száma: </span> " + ws.getWeekList().get(i).getOraszam() + " óra<br>";
                     //a tényezők
                     for (int t = 0; t < ws.getWeekList().get(i).getTenyezoList().size(); t++) {
 
-                        tooltiptext += "<span style=\"color:orange;\">Tényező: </span>" + ws.getWeekList().get(i).getTenyezoList().get(t).getNeve() + " " + ws.getWeekList().get(i).getTenyezoList().get(t).getLeiras() + " " + ws.getWeekList().get(i).getTenyezoList().get(t).getTenyezo() + "<br>";
+                        tooltiptext += "<span style=\"color:orange;\">Tényező: </span>" + ws.getWeekList().get(i).getTenyezoList().get(t).getNeve() + " " + ws.getWeekList().get(i).getTenyezoList().get(t).getLeiras() + " " + ws.getWeekList().get(i).getTenyezoList().get(t).getTenyezo() + "%<br>";
 
                     }
-
+                    //a tárazási idő hozzáadása
+                    tooltiptext += "<span style=\"color:orange;\">Tárazási idő: </span>" + new DecimalFormat("#.##").format(ws.getWeekList().get(i).calcTarazasiido()) + " óra<br>";
+                    //a mérnöki idő hozzáadása
+                    tooltiptext += "<span style=\"color:orange;\">Mérnöki idő: </span>" + new DecimalFormat("#.##").format(ws.getWeekList().get(i).getMernokiido()) + " óra<br>";
+                    //a gyártási idő kiírása
+                    tooltiptext += "<span style=\"color:orange;\">Gyártási idő: </span>" + new DecimalFormat("#.##").format(ws.getWeekList().get(i).getSumgyartasiido()) + " óra<br>";
                     tooltiptext += "<br>";
-
 //bepörgetjük az adatait és ha egyezik a prefix a sor elejen szereplovel hozzaadjuk a tooltip texthez
                     for (int n = 0; n < ws.getWeekList().get(i).getGyartasok().size(); n++) {
                         if (ws.getWeekList().get(i).getGyartasok().get(n)[0].substring(0, 5).equals(table.getValueAt(row, 0).toString())) {
                             double gyartas = 0.00;
                             try {
 
-                                gyartas = Double.parseDouble(ws.getWeekList().get(i).getGyartasok().get(n)[1]) * Double.parseDouble(ws.getWeekList().get(i).getGyartasok().get(n)[4]) /60/60 / Double.parseDouble(ws.getWeekList().get(i).getGyartasok().get(n)[6]);
-                                for (int z = 0; z < ws.getWeekList().get(i).getTenyezoList().size(); z++) {
-
-                                    gyartas = gyartas / ws.getWeekList().get(i).getTenyezoList().get(z).getTenyezo();
-
-                                }
-
-                                gyartas = gyartas / ws.getHatekonysag();
-                                gyartas += ws.getTarazasiido();
+                                gyartas = ws.getWeekList().get(i).calcGyartasiido(Double.parseDouble(ws.getWeekList().get(i).getGyartasok().get(n)[1]), Double.parseDouble(ws.getWeekList().get(i).getGyartasok().get(n)[4]), Double.parseDouble(ws.getWeekList().get(i).getGyartasok().get(n)[6]));
 
                             } catch (Exception e) {
 

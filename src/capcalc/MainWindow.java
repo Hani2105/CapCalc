@@ -899,17 +899,23 @@ public class MainWindow extends javax.swing.JFrame {
                         //a kommentek
                         //szedjuk ossze a het adatait
                         //óraszám
-                        String hetadatai = "Óraszám: " + wk.getOraszam() + "\n";
+                        String hetadatai = "Elérhető óraszám: " + wk.getOraszam() + "\n";
                         //factorok
                         for (int h = 0; h < wk.getTenyezoList().size(); h++) {
 
                             hetadatai += "Tényező: " + wk.getTenyezoList().get(h).getNeve() + " " + wk.getTenyezoList().get(h).getTenyezo() + "\n";
                         }
+                        //a tárazási idő
+                        hetadatai += "Tárazási idő: " + wk.calcTarazasiido() + " óra \n";
+                        //mérnöki idő
+                        hetadatai += "Mérnöki idő: " + wk.getMernokiido() + " óra \n";
+                        //tiszta gyártási idő
+                        hetadatai += "Gyártási idő: " + new DecimalFormat("#.##").format(wk.getSumgyartasiido()) + " óra \n" ;
 
                         anchor.setCol1(cell.getColumnIndex());
                         anchor.setCol2(cell.getColumnIndex() + 4);
                         anchor.setRow1(row.getRowNum());
-                        anchor.setRow2(row.getRowNum() + wk.getTenyezoList().size() + 1);
+                        anchor.setRow2(row.getRowNum() + wk.getTenyezoList().size() + 4);
                         // Create the comment and set the text+author
                         Comment comment = drawing.createCellComment(anchor);
                         RichTextString str = factory.createRichTextString(hetadatai);

@@ -20,9 +20,14 @@ public class Week {
     private String weekname = "";
     private ArrayList<String[]> gyartasok = new ArrayList<>();
     private WorkStation ws = null;
+    //a heten elerheto oraszam
     private double oraszam = 168.0;
     private ArrayList<Factor> tenyezolist = new ArrayList<>();
+    //tarazssal mernokivel egyutt
     private double gyartasiora = 0.00;
+    private double mernokiido = 0.00;
+    //a tiszta gyártási idő
+    private double sumgyartasiido = 0.00;
 
     public Week(String wsname, String weekname, WorkStation ws) {
 
@@ -36,6 +41,22 @@ public class Week {
 
     }
 
+    public double getSumgyartasiido() {
+        return sumgyartasiido;
+    }
+
+    public void setSumgyartasiido(double sumgyartasiido) {
+        this.sumgyartasiido = sumgyartasiido;
+    }
+
+    public double getMernokiido() {
+        return mernokiido;
+    }
+
+    public void setMernokiido(double mernokiido) {
+        this.mernokiido = mernokiido;
+    }
+
     public double getGyartasiora() {
         return gyartasiora;
     }
@@ -44,8 +65,6 @@ public class Week {
         this.gyartasiora = gyartasiora;
     }
 
-    
-    
     public ArrayList<Factor> getTenyezoList() {
         return tenyezolist;
     }
@@ -95,9 +114,8 @@ public class Week {
     }
 
     public void getSajatAdat() {
-
-        getGyartasok().clear();
         //az összesített sheetről kiszedi a megfelelő adatokat és eltárolja saját magában
+        getGyartasok().clear();
 
         for (int i = 0; i < MainWindow.so.getOsszegzes().size(); i++) {
             try {
@@ -191,6 +209,8 @@ public class Week {
                     } catch (Exception e) {
                         try {
                             gyartasido = calcGyartasiido(Double.parseDouble(getGyartasok().get(i)[1]), Double.parseDouble(getGyartasok().get(i)[4]), Double.parseDouble(getGyartasok().get(i)[6]));
+                       
+                            
                         } catch (Exception ex) {
                         }
                     }
@@ -205,8 +225,10 @@ public class Week {
         }
 
         //ki kell szamolni a summat es beírni a legfelső sorba--------------------------------------------->
+        //kinullazzuk a sum gyartasi idot
+       
         for (int c = 1; c < model.getColumnCount(); c++) {
-
+            setSumgyartasiido(0);
             if (model.getColumnName(c).equals(getWeekname())) {
 
                 //bejarjuk a sorokat es osszeadjuk h mizu
@@ -214,10 +236,18 @@ public class Week {
                 for (int r = 1; r < model.getRowCount(); r++) {
                     try {
                         osszeg += Double.parseDouble(model.getValueAt(r, c).toString());
+                        //hozzaadjuk a gyartasiidohoz (pure)
+                        setSumgyartasiido(getSumgyartasiido()+Double.parseDouble(model.getValueAt(r, c).toString()));
+                       
                        
                     } catch (Exception e) {
                     }
                 }
+                //hozzáadjuk a mérnöki időt
+                osszeg += getMernokiido();
+                //hozzáadjuk a tárazgálási időt
+                osszeg += calcTarazasiido();
+
                 //számoljuk ki százalékban is
                 //kiszámoljuk az 1 százalékát a hét óraszámának
                 double szazalek = 0.00;
@@ -225,7 +255,8 @@ public class Week {
                 //megnezzuk, hogy ez hanyszor van meg az összegben
                 szazalek = osszeg / szazalek;
                 setGyartasiora(osszeg);
-                model.setValueAt(new DecimalFormat("#.##").format(osszeg) +" | " + new DecimalFormat("#.##").format(szazalek)+ "%", 0, c);
+
+                model.setValueAt(new DecimalFormat("#.##").format(osszeg) + "ó " + new DecimalFormat("#.##").format(szazalek) + "%", 0, c);
                 break;
 
             }
@@ -251,9 +282,20 @@ public class Week {
         }
 
         gyi = gyi / ws.getHatekonysag();
-        gyi += ws.getTarazasiido();
 
         return gyi;
+    }
+
+    public double calcTarazasiido() {
+
+        double ido = 0.00;
+        try {
+            ido = ws.getTarazasiido() * this.getGyartasok().size();
+        } catch (Exception e) {
+        }
+
+        return ido;
+
     }
 
 }
