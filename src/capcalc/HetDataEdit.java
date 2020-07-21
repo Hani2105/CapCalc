@@ -43,6 +43,8 @@ public class HetDataEdit extends javax.swing.JDialog {
                 jTextField2.setText(String.valueOf(w.getWeekList().get(i).getOraszam()));
                 //a mernoki ido beallitasa a textfiledbe
                 jTextField3.setText(String.valueOf(w.getWeekList().get(i).getMernokiido()));
+                //a tárazási idő beállítása a texfieldbe
+                jTextField4.setText(String.valueOf(w.getWeekList().get(i).getTarazasiido()));
                 this.wk = w.getWeekList().get(i);
             }
 
@@ -118,6 +120,8 @@ public class HetDataEdit extends javax.swing.JDialog {
         jTextField2 = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
         jTextField3 = new javax.swing.JTextField();
+        jLabel6 = new javax.swing.JLabel();
+        jTextField4 = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -241,6 +245,14 @@ public class HetDataEdit extends javax.swing.JDialog {
             }
         });
 
+        jLabel6.setText("Tárazási idő:");
+
+        jTextField4.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jTextField4KeyPressed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -248,6 +260,10 @@ public class HetDataEdit extends javax.swing.JDialog {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel6)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel5)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -266,7 +282,10 @@ public class HetDataEdit extends javax.swing.JDialog {
                     .addComponent(jLabel4)
                     .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                         .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel5)))
+                        .addComponent(jLabel5)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                            .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel6))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
@@ -423,6 +442,8 @@ public class HetDataEdit extends javax.swing.JDialog {
                 w.getWeekList().get(i).setOraszam(Double.parseDouble(jTextField2.getText()));
                 //beallitjuk a mernoki időt is
                 w.getWeekList().get(i).setMernokiido(Double.parseDouble(jTextField3.getText()));
+                //beallitjuk a tarazasi időt is
+                w.getWeekList().get(i).setTarazasiido(Double.parseDouble(jTextField4.getText()));
                 //lefuttatjuk a sajatadattotablet
                 w.getWeekList().get(i).setSajatAdatToTable();
             }
@@ -449,10 +470,13 @@ public class HetDataEdit extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_jTextField3KeyPressed
 
-    
-    
-    
-    
+    private void jTextField4KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField4KeyPressed
+        // tárazási idő
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            setTenyezo();
+        }
+    }//GEN-LAST:event_jTextField4KeyPressed
+
     /**
      * @param args the command line arguments
      */
@@ -509,6 +533,7 @@ public class HetDataEdit extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
@@ -519,7 +544,7 @@ public class HetDataEdit extends javax.swing.JDialog {
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
+    private javax.swing.JTextField jTextField4;
     // End of variables declaration//GEN-END:variables
 
-   
 }

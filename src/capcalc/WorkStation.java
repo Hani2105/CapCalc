@@ -23,16 +23,16 @@ public class WorkStation extends javax.swing.JPanel {
     private double hatekonysag = 0.00;
     private ArrayList<Week> weekList = new ArrayList<>();
     MainWindow m;
-    private double tarazasiido = 0.00;
+//    private double tarazasiido = 0.00;
 
-    public WorkStation(String name, double hatekonysag, int szelesseg, int magassag, MainWindow m, double tarazasiido) {
+    public WorkStation(String name, double hatekonysag, int szelesseg, int magassag, MainWindow m) {
         initComponents();
         this.m = m;
         jTable1.getTableHeader().setDefaultRenderer(new WsHeaderRenderer(this));
         jTable1.setDefaultRenderer(Object.class, new WsRenderer(this));
         setName(name);
         setHatekonysag(hatekonysag);
-        setTarazasiido(tarazasiido);
+        //setTarazasiido(tarazasiido);
         setSize(MainWindow.jPanel2.getSize().width, magassag);
         //a pozicioja beallitasa
         setPosition();
@@ -47,13 +47,6 @@ public class WorkStation extends javax.swing.JPanel {
 
     }
 
-    public double getTarazasiido() {
-        return tarazasiido;
-    }
-
-    public void setTarazasiido(double tarazasiido) {
-        this.tarazasiido = tarazasiido;
-    }
 
     public ArrayList<Week> getWeekList() {
         return weekList;
@@ -198,7 +191,6 @@ public class WorkStation extends javax.swing.JPanel {
         DefaultListModel listModel = new DefaultListModel();
         listModel.addElement("<html><span style=\"color:red;\">Állomás neve: </span>" + getName());
         listModel.addElement("<html><span style=\"color:red;\">Állomás alap hatékonysága: </span>" + getHatekonysag());
-        listModel.addElement(("<html><span style=\"color:red;\">Tárazási idő termékenként: </span>" + getTarazasiido()));
         jList1.setModel(listModel);
     
     }

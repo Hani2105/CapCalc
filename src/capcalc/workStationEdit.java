@@ -28,7 +28,7 @@ public class workStationEdit extends javax.swing.JDialog {
         this.w = w;
         //töltsük ki az adatokat
         //
-        jTextField2.setText(String.valueOf(w.getTarazasiido()));
+        jTextField2.setText("");
         jTextField3.setText(String.valueOf(w.getHatekonysag()));
         jTextField1.setText("");
         jTextField4.setText("");
@@ -142,10 +142,7 @@ public class workStationEdit extends javax.swing.JDialog {
             w.setHatekonysag(Double.parseDouble(jTextField3.getText()));
         } catch (Exception e) {
         }
-        try {
-            w.setTarazasiido(Double.parseDouble(jTextField2.getText()));
-        } catch (Exception e) {
-        }
+
         //beállítjuk az óraszámot és újraszámoltatjuk az adatokat
         for (int i = 0; i < w.getWeekList().size(); i++) {
             try {
@@ -153,6 +150,12 @@ public class workStationEdit extends javax.swing.JDialog {
                 w.getWeekList().get(i).setOraszam(Double.parseDouble(jTextField1.getText().trim()));
             } catch (Exception e) {
             }
+            //a tárazási idő
+            try {
+                w.getWeekList().get(i).setTarazasiido(Double.parseDouble(jTextField2.getText()));
+            } catch (Exception e) {
+            }
+
             //a mérnöki gyártás beállítása
             try {
                 w.getWeekList().get(i).setMernokiido(Double.parseDouble(jTextField4.getText()));

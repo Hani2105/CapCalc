@@ -28,6 +28,8 @@ public class Week {
     private double mernokiido = 0.00;
     //a tiszta gyártási idő
     private double sumgyartasiido = 0.00;
+    //a tárazási idő
+    private double tarazasiido = 0.00;
 
     public Week(String wsname, String weekname, WorkStation ws) {
 
@@ -39,6 +41,14 @@ public class Week {
         //ki kell tenni a táblába a megfelelő helyre
         setSajatAdatToTable();
 
+    }
+
+    public double getTarazasiido() {
+        return tarazasiido;
+    }
+
+    public void setTarazasiido(double tarazasiido) {
+        this.tarazasiido = tarazasiido;
     }
 
     public double getSumgyartasiido() {
@@ -209,8 +219,7 @@ public class Week {
                     } catch (Exception e) {
                         try {
                             gyartasido = calcGyartasiido(Double.parseDouble(getGyartasok().get(i)[1]), Double.parseDouble(getGyartasok().get(i)[4]), Double.parseDouble(getGyartasok().get(i)[6]));
-                       
-                            
+
                         } catch (Exception ex) {
                         }
                     }
@@ -226,7 +235,6 @@ public class Week {
 
         //ki kell szamolni a summat es beírni a legfelső sorba--------------------------------------------->
         //kinullazzuk a sum gyartasi idot
-       
         for (int c = 1; c < model.getColumnCount(); c++) {
             setSumgyartasiido(0);
             if (model.getColumnName(c).equals(getWeekname())) {
@@ -237,9 +245,8 @@ public class Week {
                     try {
                         osszeg += Double.parseDouble(model.getValueAt(r, c).toString());
                         //hozzaadjuk a gyartasiidohoz (pure)
-                        setSumgyartasiido(getSumgyartasiido()+Double.parseDouble(model.getValueAt(r, c).toString()));
-                       
-                       
+                        setSumgyartasiido(getSumgyartasiido() + Double.parseDouble(model.getValueAt(r, c).toString()));
+
                     } catch (Exception e) {
                     }
                 }
@@ -290,7 +297,7 @@ public class Week {
 
         double ido = 0.00;
         try {
-            ido = ws.getTarazasiido() * this.getGyartasok().size();
+            ido = getTarazasiido() * this.getGyartasok().size();
         } catch (Exception e) {
         }
 

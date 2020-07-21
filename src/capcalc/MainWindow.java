@@ -127,6 +127,7 @@ public class MainWindow extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jTextField2 = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTable2 = new javax.swing.JTable();
@@ -213,6 +214,14 @@ public class MainWindow extends javax.swing.JFrame {
 
         jLabel4.setText("Kereső:");
 
+        jLabel10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/pictures/excelexport.png"))); // NOI18N
+        jLabel10.setToolTipText("Export to Excel");
+        jLabel10.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel10MouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -220,6 +229,8 @@ public class MainWindow extends javax.swing.JFrame {
             .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 645, Short.MAX_VALUE)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel10)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -232,10 +243,13 @@ public class MainWindow extends javax.swing.JFrame {
                     .addComponent(jLabel1)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel4)))
+                        .addComponent(jLabel4))
+                    .addComponent(jLabel10))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 273, Short.MAX_VALUE))
         );
+
+        jLabel10.getAccessibleContext().setAccessibleDescription("Export to Excel");
 
         jTabbedPane1.addTab("SMT ciklusidők", jPanel1);
 
@@ -832,6 +846,11 @@ public class MainWindow extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jMenuItem7ActionPerformed
 
+    private void jLabel10MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel10MouseClicked
+        // export to excel
+        new ExportToExcel(jTable1);
+    }//GEN-LAST:event_jLabel10MouseClicked
+
     public void exportToExcel() throws FileNotFoundException, IOException {
 
         XSSFWorkbook workbook = new XSSFWorkbook();
@@ -864,7 +883,7 @@ public class MainWindow extends javax.swing.JFrame {
                 cell = row.createCell(++columnCount);
                 cell.setCellValue("Eff: " + ws.getHatekonysag());
                 cell = row.createCell(++columnCount);
-                cell.setCellValue("Tárazás: " + ws.getTarazasiido());
+                //cell.setCellValue("Tárazás: " + ws.getTarazasiido());
                 columnCount = 0;
                 row = sheet.createRow(++rowCount);
                 //a hetek kiírása
@@ -1582,6 +1601,7 @@ public class MainWindow extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
