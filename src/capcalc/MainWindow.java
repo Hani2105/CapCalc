@@ -134,23 +134,27 @@ public class MainWindow extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jTextField1 = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
+        jLabel11 = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
         jTable3 = new javax.swing.JTable();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jTextField3 = new javax.swing.JTextField();
+        jLabel12 = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
         jScrollPane4 = new javax.swing.JScrollPane();
         jTable4 = new javax.swing.JTable();
         jLabel7 = new javax.swing.JLabel();
         jTextField4 = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
+        jLabel13 = new javax.swing.JLabel();
         jPanel6 = new javax.swing.JPanel();
         jScrollPane5 = new javax.swing.JScrollPane();
         jTable5 = new javax.swing.JTable();
         jLabel9 = new javax.swing.JLabel();
         jTextField5 = new javax.swing.JTextField();
+        jLabel14 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem2 = new javax.swing.JMenuItem();
@@ -249,8 +253,6 @@ public class MainWindow extends javax.swing.JFrame {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 273, Short.MAX_VALUE))
         );
 
-        jLabel10.getAccessibleContext().setAccessibleDescription("Export to Excel");
-
         jTabbedPane1.addTab("SMT ciklusidők", jPanel1);
 
         jTable2.setAutoCreateRowSorter(true);
@@ -286,6 +288,14 @@ public class MainWindow extends javax.swing.JFrame {
 
         jLabel3.setText("Kereső:");
 
+        jLabel11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/pictures/excelexport.png"))); // NOI18N
+        jLabel11.setToolTipText("Export to Excel");
+        jLabel11.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel11MouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -293,6 +303,8 @@ public class MainWindow extends javax.swing.JFrame {
             .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 645, Short.MAX_VALUE)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addComponent(jLabel2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel11)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -305,7 +317,8 @@ public class MainWindow extends javax.swing.JFrame {
                     .addComponent(jLabel2)
                     .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel3)))
+                        .addComponent(jLabel3))
+                    .addComponent(jLabel11))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 273, Short.MAX_VALUE))
         );
@@ -345,12 +358,22 @@ public class MainWindow extends javax.swing.JFrame {
             }
         });
 
+        jLabel12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/pictures/excelexport.png"))); // NOI18N
+        jLabel12.setToolTipText("Export to Excel");
+        jLabel12.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel12MouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addComponent(jLabel5)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel12)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel6)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -364,7 +387,8 @@ public class MainWindow extends javax.swing.JFrame {
                     .addComponent(jLabel5)
                     .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel6)))
+                        .addComponent(jLabel6))
+                    .addComponent(jLabel12))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 273, Short.MAX_VALUE))
         );
@@ -404,6 +428,14 @@ public class MainWindow extends javax.swing.JFrame {
             }
         });
 
+        jLabel13.setIcon(new javax.swing.ImageIcon(getClass().getResource("/pictures/excelexport.png"))); // NOI18N
+        jLabel13.setToolTipText("Export to Excel");
+        jLabel13.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel13MouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
@@ -411,6 +443,8 @@ public class MainWindow extends javax.swing.JFrame {
             .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 645, Short.MAX_VALUE)
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addComponent(jLabel8)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel13)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel7)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -423,7 +457,8 @@ public class MainWindow extends javax.swing.JFrame {
                     .addComponent(jLabel8)
                     .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel7)))
+                        .addComponent(jLabel7))
+                    .addComponent(jLabel13))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 273, Short.MAX_VALUE))
         );
@@ -455,13 +490,22 @@ public class MainWindow extends javax.swing.JFrame {
             }
         });
 
+        jLabel14.setIcon(new javax.swing.ImageIcon(getClass().getResource("/pictures/excelexport.png"))); // NOI18N
+        jLabel14.setToolTipText("Export to Excel");
+        jLabel14.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel14MouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 645, Short.MAX_VALUE)
             .addGroup(jPanel6Layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jLabel14)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel9)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -469,12 +513,13 @@ public class MainWindow extends javax.swing.JFrame {
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
-                .addGap(6, 6, 6)
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel9))
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel14)
+                    .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel9)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 272, Short.MAX_VALUE))
+                .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 273, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Összegzés", jPanel6);
@@ -851,6 +896,30 @@ public class MainWindow extends javax.swing.JFrame {
         new ExportToExcel(jTable1);
     }//GEN-LAST:event_jLabel10MouseClicked
 
+    private void jLabel11MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel11MouseClicked
+        // TODO add your handling code here:
+        // export to excel
+        new ExportToExcel(jTable2);
+    }//GEN-LAST:event_jLabel11MouseClicked
+
+    private void jLabel12MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel12MouseClicked
+        // TODO add your handling code here:
+        // export to excel
+        new ExportToExcel(jTable3);
+    }//GEN-LAST:event_jLabel12MouseClicked
+
+    private void jLabel13MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel13MouseClicked
+        // TODO add your handling code here:
+        // export to excel
+        new ExportToExcel(jTable4);
+    }//GEN-LAST:event_jLabel13MouseClicked
+
+    private void jLabel14MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel14MouseClicked
+        // TODO add your handling code here:
+        // export to excel
+        new ExportToExcel(jTable5);
+    }//GEN-LAST:event_jLabel14MouseClicked
+
     public void exportToExcel() throws FileNotFoundException, IOException {
 
         XSSFWorkbook workbook = new XSSFWorkbook();
@@ -912,7 +981,7 @@ public class MainWindow extends javax.swing.JFrame {
                         cell.setCellStyle(my_style);
                     }
                     try {
-                        
+
                         cell.setCellValue(Integer.parseInt(ws.jTable1.getColumnName(k)));
 
                         //a kommentek
@@ -929,7 +998,7 @@ public class MainWindow extends javax.swing.JFrame {
                         //mérnöki idő
                         hetadatai += "Mérnöki idő: " + wk.getMernokiido() + " óra \n";
                         //tiszta gyártási idő
-                        hetadatai += "Gyártási idő: " + new DecimalFormat("#.##").format(wk.getSumgyartasiido()) + " óra \n" ;
+                        hetadatai += "Gyártási idő: " + new DecimalFormat("#.##").format(wk.getSumgyartasiido()) + " óra \n";
 
                         anchor.setCol1(cell.getColumnIndex());
                         anchor.setCol2(cell.getColumnIndex() + 4);
@@ -943,7 +1012,7 @@ public class MainWindow extends javax.swing.JFrame {
 
                     } catch (Exception e) {
                         try {
-                            
+
                             cell.setCellValue(ws.jTable1.getColumnName(k));
 
                         } catch (Exception ex) {
@@ -951,10 +1020,10 @@ public class MainWindow extends javax.swing.JFrame {
                     }
 
                 }
-                
+
                 CellStyle simastyle = workbook.createCellStyle();
                 simastyle.setAlignment(HorizontalAlignment.CENTER);
-                
+
                 //az adatok kiírása
                 for (int r = 0; r < ws.jTable1.getRowCount(); r++) {
 
@@ -1009,7 +1078,7 @@ public class MainWindow extends javax.swing.JFrame {
 
                         //megprobaljuk doubleve convertalni, ha sikerul ugy irjuk ki, ha nem akkor legyen string
                         try {
-                           
+
                             cell.setCellValue(Double.parseDouble(ws.jTable1.getValueAt(r, c).toString()));
 
 //ha 80% legyen narancs
@@ -1602,6 +1671,10 @@ public class MainWindow extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;

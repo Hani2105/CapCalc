@@ -318,9 +318,6 @@
                 </Property>
                 <Property name="toolTipText" type="java.lang.String" value="Export to Excel"/>
               </Properties>
-              <AccessibilityProperties>
-                <Property name="AccessibleContext.accessibleDescription" type="java.lang.String" value="Export to Excel"/>
-              </AccessibilityProperties>
               <Events>
                 <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jLabel10MouseClicked"/>
               </Events>
@@ -342,6 +339,8 @@
                   <Component id="jScrollPane2" pref="645" max="32767" attributes="0"/>
                   <Group type="102" attributes="0">
                       <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="jLabel11" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="32767" attributes="0"/>
                       <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
@@ -358,6 +357,7 @@
                               <Component id="jTextField1" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="jLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
+                          <Component id="jLabel11" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="jScrollPane2" pref="273" max="32767" attributes="0"/>
@@ -440,6 +440,17 @@
                 <Property name="text" type="java.lang.String" value="Keres&#x151;:"/>
               </Properties>
             </Component>
+            <Component class="javax.swing.JLabel" name="jLabel11">
+              <Properties>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/pictures/excelexport.png"/>
+                </Property>
+                <Property name="toolTipText" type="java.lang.String" value="Export to Excel"/>
+              </Properties>
+              <Events>
+                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jLabel11MouseClicked"/>
+              </Events>
+            </Component>
           </SubComponents>
         </Container>
         <Container class="javax.swing.JPanel" name="jPanel4">
@@ -456,6 +467,8 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
                       <Component id="jLabel5" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="jLabel12" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="32767" attributes="0"/>
                       <Component id="jLabel6" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
@@ -473,6 +486,7 @@
                               <Component id="jTextField3" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="jLabel6" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
+                          <Component id="jLabel12" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="jScrollPane3" pref="273" max="32767" attributes="0"/>
@@ -627,6 +641,17 @@
                 <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="jTextField3KeyReleased"/>
               </Events>
             </Component>
+            <Component class="javax.swing.JLabel" name="jLabel12">
+              <Properties>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/pictures/excelexport.png"/>
+                </Property>
+                <Property name="toolTipText" type="java.lang.String" value="Export to Excel"/>
+              </Properties>
+              <Events>
+                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jLabel12MouseClicked"/>
+              </Events>
+            </Component>
           </SubComponents>
         </Container>
         <Container class="javax.swing.JPanel" name="jPanel5">
@@ -644,6 +669,8 @@
                   <Component id="jScrollPane4" pref="645" max="32767" attributes="0"/>
                   <Group type="102" attributes="0">
                       <Component id="jLabel8" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="jLabel13" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="32767" attributes="0"/>
                       <Component id="jLabel7" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
@@ -660,6 +687,7 @@
                               <Component id="jTextField4" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="jLabel7" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
+                          <Component id="jLabel13" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="jScrollPane4" pref="273" max="32767" attributes="0"/>
@@ -748,6 +776,17 @@
                 <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jLabel8MouseClicked"/>
               </Events>
             </Component>
+            <Component class="javax.swing.JLabel" name="jLabel13">
+              <Properties>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/pictures/excelexport.png"/>
+                </Property>
+                <Property name="toolTipText" type="java.lang.String" value="Export to Excel"/>
+              </Properties>
+              <Events>
+                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jLabel13MouseClicked"/>
+              </Events>
+            </Component>
           </SubComponents>
         </Container>
         <Container class="javax.swing.JPanel" name="jPanel6">
@@ -764,7 +803,8 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="jScrollPane5" pref="645" max="32767" attributes="0"/>
                   <Group type="102" attributes="0">
-                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                      <Component id="jLabel14" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="32767" attributes="0"/>
                       <Component id="jLabel9" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="jTextField5" min="-2" pref="107" max="-2" attributes="0"/>
@@ -774,13 +814,15 @@
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="1" attributes="0">
-                      <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="jTextField5" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="jLabel9" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="1" attributes="0">
+                          <Component id="jLabel14" min="-2" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="jTextField5" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="jLabel9" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jScrollPane5" pref="272" max="32767" attributes="0"/>
+                      <Component id="jScrollPane5" pref="273" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -865,6 +907,17 @@
             <Component class="javax.swing.JTextField" name="jTextField5">
               <Events>
                 <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="jTextField5KeyReleased"/>
+              </Events>
+            </Component>
+            <Component class="javax.swing.JLabel" name="jLabel14">
+              <Properties>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/pictures/excelexport.png"/>
+                </Property>
+                <Property name="toolTipText" type="java.lang.String" value="Export to Excel"/>
+              </Properties>
+              <Events>
+                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jLabel14MouseClicked"/>
               </Events>
             </Component>
           </SubComponents>
