@@ -23,7 +23,7 @@ public class CapCalc {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, InterruptedException {
         try {
             UIManager.setLookAndFeel(new FlatDarculaLaf());
         } catch (Exception ex) {
@@ -33,7 +33,7 @@ public class CapCalc {
       
 
         MainWindow m = new MainWindow();
-        m.setVisible(true);
+        //m.setVisible(true);
     }
 
    
