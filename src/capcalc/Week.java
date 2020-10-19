@@ -180,6 +180,15 @@ public class Week {
                     for (int c = 1; c < model.getColumnCount(); c++) {
 
                         if (model.getColumnName(c).equals(getWeekname())) {
+
+                            //ha a cellába ERROR van írva akkor mehetünk is tovább
+                            try {
+                                if (model.getValueAt(r, c).toString().equals("ERROR")) {
+                                    continue outerloop;
+                                }
+                            } catch (Exception e) {
+                            }
+
                             //ki kell számolni az uj adatot
                             double ujadat = 0.00;
 
@@ -192,6 +201,9 @@ public class Week {
                                 try {
                                     gyartasido = calcGyartasiido(Double.parseDouble(getGyartasok().get(i)[1]), Double.parseDouble(getGyartasok().get(i)[4]), Double.parseDouble(getGyartasok().get(i)[6]));
                                 } catch (Exception ex) {
+                                    model.setValueAt("ERROR", r, c);
+                                    continue outerloop;
+
                                 }
                             }
 

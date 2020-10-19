@@ -64,7 +64,7 @@ public class MainWindow extends javax.swing.JFrame {
     //a workstationok pozicioja
     private static int womagassag = 0;
     Splash s = new Splash();
-    
+
     public MainWindow() throws IOException, InterruptedException {
         initComponents();
         //csinálunk egy splasscreent
@@ -98,19 +98,19 @@ public class MainWindow extends javax.swing.JFrame {
 
         }
     }
-    
+
     public static int getWomagassag() {
         return womagassag;
     }
-    
+
     public static void setWomagassag(int womagassag) {
         MainWindow.womagassag = womagassag;
     }
-    
+
     public void setIcon() {
-        
+
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/pictures/calc.png")));
-        
+
     }
 
     /**
@@ -666,7 +666,7 @@ public class MainWindow extends javax.swing.JFrame {
 
     //az smt ciklusidos tábla sorainak törlése
     private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
-        
+
         DefaultTableModel model = new DefaultTableModel();
         model = (DefaultTableModel) jTable1.getModel();
         model.setRowCount(0);
@@ -697,9 +697,9 @@ public class MainWindow extends javax.swing.JFrame {
                 } catch (Exception e) {
                 }
             }
-            
+
             so.getSmtcycletime().add(adatok);
-            
+
         }
         try {
 
@@ -711,7 +711,7 @@ public class MainWindow extends javax.swing.JFrame {
         //default title and icon
         JOptionPane.showMessageDialog(this,
                 "Sikeres módosítás");
-        
+
     }
 
     //a táblák adatait visszatöltjük a listákba a változtatások után
@@ -727,11 +727,11 @@ public class MainWindow extends javax.swing.JFrame {
                 } catch (Exception e) {
                 }
             }
-            
+
             so.getBackendcycletime().add(adatok);
-            
+
         }
-        
+
         try {
             //kiirjuk az so-t
             new SessionKezelo().sessionIr(so);
@@ -742,18 +742,18 @@ public class MainWindow extends javax.swing.JFrame {
         //default title and icon
         JOptionPane.showMessageDialog(this,
                 "Sikeres módosítás");
-        
+
     }
 
     // tábla szűrő kereső
     private void jTextField2KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField2KeyReleased
-        
+
         new UniversalFilter(jTextField2.getText(), jTable1);
     }//GEN-LAST:event_jTextField2KeyReleased
 
     // tábla szűrő kereső
     private void jTextField1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyReleased
-        
+
         new UniversalFilter(jTextField1.getText(), jTable2);
     }//GEN-LAST:event_jTextField1KeyReleased
 
@@ -774,6 +774,8 @@ public class MainWindow extends javax.swing.JFrame {
     private void jLabel5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel5MouseClicked
         //a táblába tesszük az adatokat és az so ba
         demandToTable();
+        //memoba tesszuk az adatokat
+        demandTableDataToList(jTable3);
 
     }//GEN-LAST:event_jLabel5MouseClicked
     //ciklusidők lekérése adatbázisból
@@ -797,33 +799,33 @@ public class MainWindow extends javax.swing.JFrame {
         getCycleTimeFromSo();
 
     }//GEN-LAST:event_jMenuItem3ActionPerformed
-    
+
     public void getCycleTimeFromSo() {
-        
+
         DefaultTableModel model = new DefaultTableModel();
         model = (DefaultTableModel) jTable1.getModel();
         model.setRowCount(0);
-        
+
         for (int i = 0; i < so.getSmtcycletime().size(); i++) {
-            
+
             model.addRow(so.getSmtcycletime().get(i));
-            
+
         }
-        
+
         jTable1.setModel(model);
-        
+
         DefaultTableModel model1 = (DefaultTableModel) jTable2.getModel();
         model1.setRowCount(0);
         for (int i = 0; i < so.getBackendcycletime().size(); i++) {
-            
+
             model1.addRow(so.getBackendcycletime().get(i));
-            
+
         }
-        
+
         jTable2.setModel(model1);
-        
+
     }
-    
+
 
     private void jTable3KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTable3KeyPressed
         // TODO add your handling code here:
@@ -835,7 +837,7 @@ public class MainWindow extends javax.swing.JFrame {
     private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
         getDemandFromSo();
     }//GEN-LAST:event_jMenuItem4ActionPerformed
-    
+
     public void getDemandFromSo() {
 
         // TODO add your handling code here:
@@ -843,17 +845,17 @@ public class MainWindow extends javax.swing.JFrame {
         DefaultTableModel model = new DefaultTableModel();
         model = (DefaultTableModel) jTable3.getModel();
         model.setRowCount(0);
-        
+
         for (int i = 0; i < so.getDemandList().size(); i++) {
-            
+
             model.addRow(so.getDemandList().get(i));
-            
+
         }
-        
+
         jTable3.setModel(model);
-        
+
     }
-    
+
 
     private void jTextField3KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField3KeyReleased
         new UniversalFilter(jTextField3.getText(), jTable3);
@@ -878,7 +880,7 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_jTable4KeyPressed
     //a kapcsolati adatok betöltése a session filebol
     private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
-        
+
         getKapcsolatDatafromSo();
 
     }//GEN-LAST:event_jMenuItem5ActionPerformed
@@ -902,30 +904,30 @@ public class MainWindow extends javax.swing.JFrame {
 
             //kikapcsoljuk az editalast
             if (jTable5.isEditing()) {
-                
+
                 jTable5.getCellEditor().cancelCellEditing();
             }
-            
+
             osszegzesToSo();
             //frissitsuk le a meglevo ws-eket az uj adattal
             for (int i = 0; i < jPanel2.getComponentCount(); i++) {
-                
+
                 if (jPanel2.getComponent(i) instanceof WorkStation) {
-                    
+
                     WorkStation ws = (WorkStation) jPanel2.getComponent(i);
-                    
+
                     for (int k = 0; k < ws.getWeekList().size(); k++) {
 //                        System.out.println(ws.getWeekList().get(k).getTenyezoList().size());
 
                         ws.getWeekList().get(k).getSajatAdat();
                         ws.getWeekList().get(k).setSajatAdatToTable();
-                        
+
                     }
-                    
+
                 }
-                
+
             }
-            
+
         }
     }//GEN-LAST:event_jTable5KeyPressed
 
@@ -975,25 +977,59 @@ public class MainWindow extends javax.swing.JFrame {
     private void jLabel15MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel15MouseClicked
         //import data
         new ImportFromExcel(jTable1, this);
+        //betesszuk az adatokat a memoba
+        //smtTableDataToList(jTable1);
     }//GEN-LAST:event_jLabel15MouseClicked
 
     private void jLabel16MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel16MouseClicked
         // TODO add your handling code here:
         new ImportFromExcel(jTable2, this);
+        //memoba tesszuk az adatokat
+       // backendTableDataToList(jTable2);
+
     }//GEN-LAST:event_jLabel16MouseClicked
 
     private void jLabel17MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel17MouseClicked
         // TODO add your handling code here:
         new ImportFromExcel(jTable4, this);
+        //memoba tesszuk az adatokat
+        //kapcsolatDataToList(jTable4);
     }//GEN-LAST:event_jLabel17MouseClicked
 
     private void jLabel18MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel18MouseClicked
         // TODO add your handling code here:
         new ImportFromExcel(jTable5, this);
+//        //memoba tesszuk az adatokat
+//        //kikapcsoljuk az editalast
+//        if (jTable5.isEditing()) {
+//
+//            jTable5.getCellEditor().cancelCellEditing();
+//        }
+//
+//        osszegzesToSo();
+//        //frissitsuk le a meglevo ws-eket az uj adattal
+//        for (int i = 0; i < jPanel2.getComponentCount(); i++) {
+//
+//            if (jPanel2.getComponent(i) instanceof WorkStation) {
+//
+//                WorkStation ws = (WorkStation) jPanel2.getComponent(i);
+//
+//                for (int k = 0; k < ws.getWeekList().size(); k++) {
+////                        System.out.println(ws.getWeekList().get(k).getTenyezoList().size());
+//
+//                    ws.getWeekList().get(k).getSajatAdat();
+//                    ws.getWeekList().get(k).setSajatAdatToTable();
+//
+//                }
+//
+//            }
+//
+//        }
+
     }//GEN-LAST:event_jLabel18MouseClicked
-    
+
     public void exportToExcel() throws FileNotFoundException, IOException {
-        
+
         XSSFWorkbook workbook = new XSSFWorkbook();
         XSSFSheet sheet = workbook.createSheet("Állomások");
         workbook.createSheet("Összegzés");
@@ -1011,7 +1047,7 @@ public class MainWindow extends javax.swing.JFrame {
         int columnCount = 0;
         for (int i = 0; i < jPanel2.getComponentCount(); i++) {
             if (jPanel2.getComponent(i) instanceof WorkStation) {
-                
+
                 WorkStation ws = (WorkStation) jPanel2.getComponent(i);
                 //kellenek a columnanme adatok (hetek száma)
                 //csinálunk egy sort
@@ -1033,11 +1069,11 @@ public class MainWindow extends javax.swing.JFrame {
                     //szedjuk ki a hetet
                     for (int h = 0; h < ws.getWeekList().size(); h++) {
                         if (ws.getWeekList().get(h).getWeekname().equals(ws.jTable1.getColumnName(k))) {
-                            
+
                             wk = ws.getWeekList().get(h);
                             break;
                         }
-                        
+
                     }
 
                     //csinálunk egy oszlopot
@@ -1053,7 +1089,7 @@ public class MainWindow extends javax.swing.JFrame {
                         cell.setCellStyle(my_style);
                     }
                     try {
-                        
+
                         cell.setCellValue(Integer.parseInt(ws.jTable1.getColumnName(k)));
 
                         //a kommentek
@@ -1062,7 +1098,7 @@ public class MainWindow extends javax.swing.JFrame {
                         String hetadatai = "Elérhető óraszám: " + wk.getOraszam() + "\n";
                         //factorok
                         for (int h = 0; h < wk.getTenyezoList().size(); h++) {
-                            
+
                             hetadatai += "Tényező: " + wk.getTenyezoList().get(h).getNeve() + " " + wk.getTenyezoList().get(h).getTenyezo() + "\n";
                         }
                         //a tárazási idő
@@ -1071,7 +1107,7 @@ public class MainWindow extends javax.swing.JFrame {
                         hetadatai += "Mérnöki idő: " + wk.getMernokiido() + " óra \n";
                         //tiszta gyártási idő
                         hetadatai += "Gyártási idő: " + new DecimalFormat("#.##").format(wk.getSumgyartasiido()) + " óra \n";
-                        
+
                         anchor.setCol1(cell.getColumnIndex());
                         anchor.setCol2(cell.getColumnIndex() + 4);
                         anchor.setRow1(row.getRowNum());
@@ -1081,18 +1117,18 @@ public class MainWindow extends javax.swing.JFrame {
                         RichTextString str = factory.createRichTextString(hetadatai);
                         comment.setString(str);
                         comment.setAuthor("CapCalc");
-                        
+
                     } catch (Exception e) {
                         try {
-                            
+
                             cell.setCellValue(ws.jTable1.getColumnName(k));
-                            
+
                         } catch (Exception ex) {
                         }
                     }
-                    
+
                 }
-                
+
                 CellStyle simastyle = workbook.createCellStyle();
                 simastyle.setAlignment(HorizontalAlignment.CENTER);
 
@@ -1101,7 +1137,7 @@ public class MainWindow extends javax.swing.JFrame {
 
                     //csinálunk egy sort
                     row = sheet.createRow(++rowCount);
-                    
+
                     columnCount = 0;
                     for (int c = 0; c < ws.jTable1.getColumnCount(); c++) {
                         //csinálunk egy oszlopot
@@ -1109,13 +1145,13 @@ public class MainWindow extends javax.swing.JFrame {
                         //szedjuk ki a hetet
                         for (int h = 0; h < ws.getWeekList().size(); h++) {
                             if (ws.getWeekList().get(h).getWeekname().equals(ws.jTable1.getColumnName(c))) {
-                                
+
                                 wk = ws.getWeekList().get(h);
                                 break;
                             }
-                            
+
                         }
-                        
+
                         cell = row.createCell(++columnCount);
                         cell.setCellStyle(simastyle);
                         //alkossuk meg a kommentet
@@ -1128,10 +1164,10 @@ public class MainWindow extends javax.swing.JFrame {
                                 try {
                                     //darabszam * ciklusido / pn efficency és ez orásítva
                                     gyartasiido = wk.calcGyartasiido(Double.parseDouble(wk.getGyartasok().get(h)[1]), Double.parseDouble(wk.getGyartasok().get(h)[4]), Double.parseDouble(wk.getGyartasok().get(h)[6]));
-                                    
+
                                 } catch (Exception ex) {
                                 }
-                                
+
                                 hetadatai += "PN: " + wk.getGyartasok().get(h)[0] + " Demand: " + wk.getGyartasok().get(h)[1] + " Idő: " + new DecimalFormat("#.##").format(gyartasiido) + "\n";
                                 counter++;
                             }
@@ -1150,12 +1186,12 @@ public class MainWindow extends javax.swing.JFrame {
 
                         //megprobaljuk doubleve convertalni, ha sikerul ugy irjuk ki, ha nem akkor legyen string
                         try {
-                            
+
                             cell.setCellValue(Double.parseDouble(ws.jTable1.getValueAt(r, c).toString()));
 
 //ha 80% legyen narancs
                             if (wk.getGyartasiora() > wk.getOraszam() * 0.8 && row.getCell(1).getStringCellValue().equals("SUM:")) {
-                                
+
                                 CellStyle style = workbook.createCellStyle();
                                 style.setFillForegroundColor(IndexedColors.YELLOW.getIndex());
                                 style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
@@ -1169,16 +1205,16 @@ public class MainWindow extends javax.swing.JFrame {
                                 style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
                                 style.setAlignment(HorizontalAlignment.CENTER);
                                 cell.setCellStyle(style);
-                                
+
                             }
-                            
+
                         } catch (Exception e) {
                             try {
                                 cell.getCellStyle().setAlignment(HorizontalAlignment.CENTER);
                                 cell.setCellValue((String) ws.jTable1.getValueAt(r, c).toString());
                                 //ha 80% legyen narancs
                                 if (wk.getGyartasiora() > wk.getOraszam() * 0.8 && row.getCell(1).getStringCellValue().equals("SUM:")) {
-                                    
+
                                     CellStyle style = workbook.createCellStyle();
                                     style.setFillForegroundColor(IndexedColors.YELLOW.getIndex());
                                     style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
@@ -1192,20 +1228,20 @@ public class MainWindow extends javax.swing.JFrame {
                                     style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
                                     style.setAlignment(HorizontalAlignment.CENTER);
                                     cell.setCellStyle(style);
-                                    
+
                                 }
                             } catch (Exception ex) {
                             }
                         }
-                        
+
                     }
-                    
+
                 }
-                
+
             }
-            
+
         }
-        
+
         JFileChooser chooser = new JFileChooser();
         chooser.setCurrentDirectory(new File(System.getProperty("user.home")));
         int retrival = chooser.showSaveDialog(null);
@@ -1216,27 +1252,27 @@ public class MainWindow extends javax.swing.JFrame {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            
+
         }
-        
+
     }
-    
+
     public void getKapcsolatDatafromSo() {
         // TODO add your handling code here:
         DefaultTableModel model = new DefaultTableModel();
         model = (DefaultTableModel) jTable4.getModel();
         model.setRowCount(0);
-        
+
         for (int i = 0; i < so.getKapcsolatList().size(); i++) {
-            
+
             model.addRow(so.getKapcsolatList().get(i));
-            
+
         }
-        
+
         jTable4.setModel(model);
-        
+
     }
-    
+
     public void kapcsolatDataToList(JTable t) {
 
         //kiuritjuk a variables adatait
@@ -1250,11 +1286,11 @@ public class MainWindow extends javax.swing.JFrame {
                 } catch (Exception e) {
                 }
             }
-            
+
             so.getKapcsolatList().add(adatok);
-            
+
         }
-        
+
         try {
             //kiirjuk az so-t
             new SessionKezelo().sessionIr(so);
@@ -1265,7 +1301,7 @@ public class MainWindow extends javax.swing.JFrame {
         //default title and icon
         JOptionPane.showMessageDialog(this,
                 "Sikeres módosítás");
-        
+
     }
 
     //az smt adatokat betesszuk a jtablaba, hogy lathatoak legyenek
@@ -1277,14 +1313,14 @@ public class MainWindow extends javax.swing.JFrame {
         model.setRowCount(0);
         //hozzáadjuk az időket
         for (int i = 0; i < so.getSmtcycletime().size(); i++) {
-            
+
             model.addRow(new Object[]{so.getSmtcycletime().get(i)[0], so.getSmtcycletime().get(i)[1], so.getSmtcycletime().get(i)[2], so.getSmtcycletime().get(i)[3], so.getSmtcycletime().get(i)[4], so.getSmtcycletime().get(i)[5], so.getSmtcycletime().get(i)[6], so.getSmtcycletime().get(i)[7], so.getSmtcycletime().get(i)[8], so.getSmtcycletime().get(i)[9]});
-            
+
         }
-        
+
         jTable1.setModel(model);
         new TableWidth(jTable1);
-        
+
     }
 
     //a backend adatokat betesszuk a jtablaba, hogy lathatoak legyenek
@@ -1296,19 +1332,19 @@ public class MainWindow extends javax.swing.JFrame {
         model.setRowCount(0);
         //hozzáadjuk az időket
         for (int i = 0; i < so.getBackendcycletime().size(); i++) {
-            
+
             model.addRow(new Object[]{so.getBackendcycletime().get(i)[0], so.getBackendcycletime().get(i)[1], so.getBackendcycletime().get(i)[2], so.getBackendcycletime().get(i)[3]});
-            
+
         }
-        
+
         jTable2.setModel(model);
         new TableWidth(jTable2);
-        
+
     }
 
     //az smt ciklusidok lekerese
     public void getSmtCycleTime() {
-        
+
         connections con = null;
         try {
             //lekérdezzük az smt-s ciklusidőket és eltesszük a variable classba
@@ -1320,21 +1356,21 @@ public class MainWindow extends javax.swing.JFrame {
             ResultSet rs = (ResultSet) con.lekerdez(query);
             ResultSetMetaData rsmd = rs.getMetaData();
             while (rs.next()) {
-                
+
                 String adatok[] = new String[rsmd.getColumnCount()];
                 for (int i = 1; i <= rsmd.getColumnCount(); i++) {
-                    
+
                     adatok[i - 1] = rs.getString(i);
-                    
+
                 }
-                
+
                 so.getSmtcycletime().add(adatok);
-                
+
             }
 
             //kiirjuk az so-t
             new SessionKezelo().sessionIr(so);
-            
+
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(CapCalc.class.getName()).log(Level.SEVERE, null, ex);
             //custom title, error icon
@@ -1342,7 +1378,7 @@ public class MainWindow extends javax.swing.JFrame {
                     "Nem sikerült az SMT ciklusidők lekérése!\n" + ex.getMessage(),
                     "Hiba",
                     JOptionPane.ERROR_MESSAGE);
-            
+
         } catch (Exception ex) {
             Logger.getLogger(CapCalc.class.getName()).log(Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(this,
@@ -1355,14 +1391,14 @@ public class MainWindow extends javax.swing.JFrame {
             } catch (Exception ex) {
                 Logger.getLogger(CapCalc.class.getName()).log(Level.SEVERE, null, ex);
             }
-            
+
         }
-        
+
     }
 
     //a backend ciklusidok lekerese
     private void getBackendCycleTime() {
-        
+
         connections con = null;
         try {
             //lekérdezzük az smt-s ciklusidőket és eltesszük a variable classba
@@ -1379,21 +1415,21 @@ public class MainWindow extends javax.swing.JFrame {
             ResultSet rs = (ResultSet) con.lekerdez(query);
             ResultSetMetaData rsmd = rs.getMetaData();
             while (rs.next()) {
-                
+
                 String adatok[] = new String[rsmd.getColumnCount()];
                 for (int i = 1; i <= rsmd.getColumnCount(); i++) {
-                    
+
                     adatok[i - 1] = rs.getString(i);
-                    
+
                 }
-                
+
                 so.getBackendcycletime().add(adatok);
-                
+
             }
 
             //kiirjuk az so-t
             new SessionKezelo().sessionIr(so);
-            
+
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(CapCalc.class.getName()).log(Level.SEVERE, null, ex);
             //custom title, error icon
@@ -1401,7 +1437,7 @@ public class MainWindow extends javax.swing.JFrame {
                     "Nem sikerült a backend ciklusidők lekérése!\n" + ex.getMessage(),
                     "Hiba",
                     JOptionPane.ERROR_MESSAGE);
-            
+
         } catch (Exception ex) {
             Logger.getLogger(CapCalc.class.getName()).log(Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(this,
@@ -1414,9 +1450,9 @@ public class MainWindow extends javax.swing.JFrame {
             } catch (Exception ex) {
                 Logger.getLogger(CapCalc.class.getName()).log(Level.SEVERE, null, ex);
             }
-            
+
         }
-        
+
     }
 
     //a gyártási igények táblába tétele
@@ -1429,7 +1465,7 @@ public class MainWindow extends javax.swing.JFrame {
         if (returnVal == JFileChooser.APPROVE_OPTION) {
 //            JFileChooser chooser = CTB_Filechooser.getFileChooserRiport();
             chooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
-            
+
             File file = chooser.getSelectedFile();
             //átírjuk a sessionban a demand elérési utját
             so.setDemandLastDir(file.getPath());
@@ -1451,27 +1487,27 @@ public class MainWindow extends javax.swing.JFrame {
                 //kitöröljük az so adatokat
                 so.getDemandList().clear();
                 while ((line = in.readLine()) != null) {
-                    
+
                     String[] cells = line.split("\\t");
                     model.addRow(cells);
                     //hozzáadjuk a wo adatokat az so hoz
                     so.getDemandList().add(cells);
-                    
+
                 }
 
                 //kiirjuk az so.t
                 new SessionKezelo().sessionIr(so);
-                
+
             } catch (FileNotFoundException ex) {
                 Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
             } catch (IOException ex) {
                 Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
             }
-            
+
         }
-        
+
     }
-    
+
     public void demandTableDataToList(JTable t) {
 
         //kiuritjuk a variables adatait
@@ -1485,11 +1521,11 @@ public class MainWindow extends javax.swing.JFrame {
                 } catch (Exception e) {
                 }
             }
-            
+
             so.getDemandList().add(adatok);
-            
+
         }
-        
+
         try {
             //kiirjuk az so-t
             new SessionKezelo().sessionIr(so);
@@ -1500,7 +1536,7 @@ public class MainWindow extends javax.swing.JFrame {
         //default title and icon
         JOptionPane.showMessageDialog(this,
                 "Sikeres módosítás");
-        
+
     }
 
     //ha kezzel belenyulunk az osszegzesbe azt is mentsuk vissza az so.ba
@@ -1517,25 +1553,25 @@ public class MainWindow extends javax.swing.JFrame {
                 double ct = Double.parseDouble(model.getValueAt(i, 4).toString());
                 int qty = Integer.parseInt(model.getValueAt(i, 1).toString());
                 double eff = Double.parseDouble(model.getValueAt(i, 6).toString());
-                
+
                 String[] adatok = new String[7];
                 adatok[0] = model.getValueAt(i, 0).toString();
                 adatok[1] = model.getValueAt(i, 1).toString();
                 adatok[2] = model.getValueAt(i, 2).toString();
                 adatok[3] = model.getValueAt(i, 3).toString();
                 adatok[4] = model.getValueAt(i, 4).toString();
-                
+
                 double idoigeny = ((ct * qty) / 60) / 60 / eff;
                 adatok[5] = String.valueOf(new DecimalFormat("#.##").format(idoigeny));
-                
+
                 adatok[6] = model.getValueAt(i, 6).toString();
                 so.getOsszegzes().add(adatok);
             } catch (Exception e) {
-                
+
             }
-            
+
         }
-        
+
     }
 
     //a megadott adatok alapjan kell csinalni egy osszegzest
@@ -1562,20 +1598,20 @@ public class MainWindow extends javax.swing.JFrame {
             }
 //be kell jarni a kapcsolatok tablat es meg kell keresni, hogy letezik e ehhez a pn hez hozzaadott sor vagy cella
             String defaultws = "";
-            
+
             for (int k = 0; k < so.getKapcsolatList().size(); k++) {
 //ha megvan a pn ben a kapcsoaltlista pn je
                 if (pn.equals(so.getKapcsolatList().get(k)[0].trim().toUpperCase())) {
 //megnezzuk, hogy van e hozza default sor, vagyis kell, hogy legyen
                     defaultws = so.getKapcsolatList().get(k)[1].trim();
                     break;
-                    
+
                 }
-                
+
             }
 //akkor megyünk tovább ha van default ws, ha nincs akkor azt írjuk be az összegzésbe, hogy az kellene..
             if (defaultws.equals("")) {
-                
+
                 String[] adatok = new String[7];
                 adatok[0] = pn;
                 adatok[1] = String.valueOf(qty);
@@ -1584,7 +1620,7 @@ public class MainWindow extends javax.swing.JFrame {
                 adatok[4] = "";
                 adatok[5] = "";
                 adatok[6] = "";
-                
+
                 so.getOsszegzes().add(adatok);
                 model.addRow(adatok);
                 //johet a kovetkezo sor
@@ -1597,16 +1633,16 @@ public class MainWindow extends javax.swing.JFrame {
                 //panelizacio
 
                 for (int c = 0; c < so.getSmtcycletime().size(); c++) {
-                    
+
                     if (pn.equals(so.getSmtcycletime().get(c)[1].trim().toUpperCase()) && defaultws.toUpperCase().trim().equals(so.getSmtcycletime().get(c)[3].toUpperCase().trim())) {
 //a legerosebb merest kell alapul venni
                         //ha kalkulalt
                         try {
                             if (so.getSmtcycletime().get(c)[8] != null) {
-                                
+
                                 ct += Double.parseDouble(so.getSmtcycletime().get(c)[8]) / Double.parseDouble(so.getSmtcycletime().get(c)[5]);
                                 eff = Double.parseDouble(so.getSmtcycletime().get(c)[9]) / 100;
-                                
+
                                 continue;
                             }
                         } catch (Exception e) {
@@ -1615,7 +1651,7 @@ public class MainWindow extends javax.swing.JFrame {
 
                         try {
                             if (so.getSmtcycletime().get(c)[7] != null) {
-                                
+
                                 ct += Double.parseDouble(so.getSmtcycletime().get(c)[7]) / Double.parseDouble(so.getSmtcycletime().get(c)[5]);
                                 eff = Double.parseDouble(so.getSmtcycletime().get(c)[9]) / 100;
                                 continue;
@@ -1624,21 +1660,21 @@ public class MainWindow extends javax.swing.JFrame {
                         }//mert
                         try {
                             if (so.getSmtcycletime().get(c)[6] != null) {
-                                
+
                                 ct += Double.parseDouble(so.getSmtcycletime().get(c)[6]) / Double.parseDouble(so.getSmtcycletime().get(c)[5]);
                                 eff = Double.parseDouble(so.getSmtcycletime().get(c)[9]) / 100;
                                 continue;
                             }
                         } catch (Exception e) {
                         }
-                        
+
                     }
-                    
+
                 }
 
 //ha végigértünk és nulla a ct akkor kiirjuk, hogy nincs ciklusido smt-n
                 if (ct == 0.00) {
-                    
+
                     String[] adatok = new String[7];
                     adatok[0] = pn;
                     adatok[1] = String.valueOf(qty);
@@ -1649,7 +1685,7 @@ public class MainWindow extends javax.swing.JFrame {
                     adatok[6] = "";
                     so.getOsszegzes().add(adatok);
                     model.addRow(adatok);
-                    
+
                 } //ha van ct
                 else if (ct > 0.00) {
 //ki kell számolni az össz igénybe vett időt
@@ -1667,38 +1703,38 @@ public class MainWindow extends javax.swing.JFrame {
 //meg kell nezni, hogy eltezik e mar ilyen adat a listben es ha igen akkor csak ossze kell adni az ertekeket es nem uj sort letrehozni
                     so.getOsszegzes().add(adatok);
                     model.addRow(adatok);
-                    
+
                 }
-                
+
             }
-            
+
         }
-        
+
         jTable5.setModel(model);
-        
+
     }
-    
+
     public String evhet(String datum) throws ParseException {
         String evhet = "";
         String format = "dd-MMM-yy";
-        
+
         SimpleDateFormat df = new SimpleDateFormat(format);
         try {
             Date date = df.parse(datum);
-            
+
             Calendar cal = Calendar.getInstance();
             cal.setTime(date);
             int week = cal.get(Calendar.WEEK_OF_YEAR);
             int year = cal.get(Calendar.YEAR);
             String weekstring = "";
             if (String.valueOf(week).length() == 1) {
-                
+
                 weekstring = "0" + String.valueOf(week);
-                
+
             } else {
                 weekstring = String.valueOf(week);
             }
-            
+
             evhet = String.valueOf(year).substring(2) + weekstring;
             return evhet;
         } catch (Exception e) {

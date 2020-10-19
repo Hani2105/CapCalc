@@ -73,6 +73,8 @@ public class HetDataEdit extends javax.swing.JDialog {
                         gyartas = w.getWeekList().get(i).calcGyartasiido(Double.parseDouble(w.getWeekList().get(i).getGyartasok().get(n)[1].toString()), Double.parseDouble(w.getWeekList().get(i).getGyartasok().get(n)[4].toString()), Double.parseDouble(w.getWeekList().get(i).getGyartasok().get(n)[6].toString()));
                         model.addRow(new Object[]{w.getWeekList().get(i).getGyartasok().get(n)[0], w.getWeekList().get(i).getGyartasok().get(n)[1], w.getWeekList().get(i).getGyartasok().get(n)[2], w.getWeekList().get(i).getGyartasok().get(n)[3], new DecimalFormat("#.##").format(Double.parseDouble(w.getWeekList().get(i).getGyartasok().get(n)[4])), new DecimalFormat("#.##").format(gyartas), new DecimalFormat("#.##").format(Double.parseDouble(w.getWeekList().get(i).getGyartasok().get(n)[6]))});
                     } catch (Exception e) {
+                        //gyartas = w.getWeekList().get(i).calcGyartasiido(Double.parseDouble(w.getWeekList().get(i).getGyartasok().get(n)[1].toString()), Double.parseDouble(w.getWeekList().get(i).getGyartasok().get(n)[4].toString()), Double.parseDouble(w.getWeekList().get(i).getGyartasok().get(n)[6].toString()));
+                        model.addRow(new Object[]{w.getWeekList().get(i).getGyartasok().get(n)[0], w.getWeekList().get(i).getGyartasok().get(n)[1], w.getWeekList().get(i).getGyartasok().get(n)[2], w.getWeekList().get(i).getGyartasok().get(n)[3], "Nincs CT", "Nincs CT", "Nincs CT"});
                     }
                 }
 

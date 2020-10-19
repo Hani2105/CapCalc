@@ -17,7 +17,7 @@ import javax.swing.table.DefaultTableCellRenderer;
  *
  * @author gabor_hanacsek
  */
-public class WsRenderer extends DefaultTableCellRenderer{
+public class WsRenderer extends DefaultTableCellRenderer {
 
     WorkStation ws;
 
@@ -76,13 +76,18 @@ public class WsRenderer extends DefaultTableCellRenderer{
         //a tooltiptext beallítasa
 
         if (row >= 0 && column > 0 && table.getValueAt(row, column) != null) {
+
+            if (table.getValueAt(row, column).toString().equals("ERROR")) {
+
+                c.setForeground(Color.red);
+            } 
             String tooltiptext = "<html>";
             //ki kell talalni, hogy az adott cella adata miből áll össze
             //ki kell találni a hetet
             for (int i = 0; i < ws.getWeekList().size(); i++) {
 //ha a hét száma egyezik a column nevével továbbmegyünk
                 if (ws.getWeekList().get(i).getWeekname().equals(table.getColumnName(column))) {
-                    
+
                     //a hét adatait listázzuk ki
                     //a hét óraszáma  
                     tooltiptext += "<span style=\"color:orange;\">A héten elérhető órák száma: </span> " + ws.getWeekList().get(i).getOraszam() + " óra<br>";
